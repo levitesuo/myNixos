@@ -6,6 +6,7 @@
 		./hyprcursor.nix
 		./decoration.nix
 		./animation.nix
+		./hyprpaper.nix
 	];
 	wayland.windowManager.hyprland = {
 		enable = true;
