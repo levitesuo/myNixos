@@ -1,4 +1,0 @@
-{ ... }:
-{
-	programs.hyprpaper.enable = true;
-}

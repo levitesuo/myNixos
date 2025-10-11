@@ -4,6 +4,7 @@
 
   imports =[
     ./home/nixvim/nixvim.nix
+		./home/vscode.nix
     ./home/kitty.nix
     ./home/fish.nix
 		./home/starship.nix
@@ -44,6 +45,7 @@
     #   echo "Hello, ${config.home.username}!"
     # '')
 		libnotify
+		hyprshot
   ];
 
   # Home Manager is pretty good at managing dotfiles. The primary way to manage
@@ -78,6 +80,7 @@
   #  /etc/profiles/per-user/leevisuo/etc/profile.d/hm-session-vars.sh
   #
   home.sessionVariables = {
+		HYPRSHOT_DIR = "$HOME/Pictures/Screenshots";
     # EDITOR = "emacs";
   };
 

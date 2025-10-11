@@ -111,6 +111,7 @@
     extraGroups = [ "networkmanager" "wheel" ];
     shell = pkgs.fish;
     packages = with pkgs; [
+			hyprpicker
 			google-chrome
     ];
   };
@@ -118,6 +119,8 @@
 	home-manager.extraSpecialArgs = {
 		inherit  stylix;
 	};
+
+	home-manager.backupFileExtension = ".bak";
 
 	home-manager.users.leevisuo = {
 		imports = [ 
