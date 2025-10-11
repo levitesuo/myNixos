@@ -8,10 +8,6 @@
     enable = true;
 		themeFile = "GruvboxMaterialDarkHard";
 		shellIntegration.enableFishIntegration = true;
-    font = {
-      name = "JetBrainsMono Nerd Font";
-      size = 10;
-    };
     extraConfig = ''
     background_opacity 0.5
 		background_blur 12

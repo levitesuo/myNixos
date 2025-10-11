@@ -7,17 +7,13 @@
 			url = "github:nix-community/home-manager/release-25.05";
 			inputs.nixpkgs.follows = "nixpkgs";
 		};
-		nixvim = {
-			url = "github:nix-community/nixvim/nixos-25.05";
-			inputs.nixpkgs.follows = "nixpkgs";
-		};    
 		stylix = {
-			url = "github:danth/stylix";
+			url = "github:danth/stylix/release-25.05";
 			inputs.nixpkgs.follows = "nixpkgs";
 		};
 	};
 
-	outputs = { self, nixpkgs, home-manager, stylix, ... }@inputs:
+	outputs = { self, nixpkgs, home-manager, stylix, ... }:
 		let
 		lib = nixpkgs.lib;
 	system = "x86_64-linux"; 
@@ -27,7 +23,7 @@
 			nixos = lib.nixosSystem {
 				inherit system;
 				specialArgs = {
-					inherit inputs;
+					inherit stylix;
 				};
 				modules = [ 
 					./configuration.nix  

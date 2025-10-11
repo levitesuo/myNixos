@@ -1,4 +1,11 @@
-{  pkgs, nixvim, ...}:
+{ ...}:
+let
+	nixvim = import (builtins.fetchGit { 
+			url = "https://github.com/nix-community/nixvim";
+			ref = "nixos-25.05";
+			narHash = "sha256-0+hp5PqHTXEUjUnc7oFIJVILkNVC330kMeVNdayYrII=";
+		});
+in
 {
   imports = [ 
 		nixvim.homeManagerModules.nixvim

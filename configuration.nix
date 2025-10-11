@@ -2,7 +2,7 @@
 # your system.  Help is available in the configuration.nix(5) man page
 # and in the NixOS manual (accessible by running ‘nixos-help’).
 
-{ config, pkgs, stylix, inputs, ... }:
+{ config, pkgs, stylix, ... }:
 {
   imports =
     [ # Include the results of the hardware scan.
@@ -10,6 +10,7 @@
     ];
 
 	# Colorscheme
+	stylix.enable = true;
 	stylix.base16Scheme = "${pkgs.base16-schemes}/share/themes/gruvbox-dark-medium.yaml";
 	stylix.image = ./paul-chadeisson-solstice-prequel-062.jpg; 
 	
@@ -114,10 +115,13 @@
     ];
   };
 
+	home-manager.extraSpecialArgs = {
+		inherit  stylix;
+	};
+
 	home-manager.users.leevisuo = {
 		imports = [ 
 				./home.nix 
-				stylix.homeManagerModules.stylix
 			];
 			home.stateVersion = "25.05";
 	};
