@@ -1,8 +1,9 @@
-{ config, pkgs, ... }:
+{ pkgs, inputs, ... }:
 
 {
 
   imports =[
+		inputs.nixvim.configuration.nixvim
     ./home/nixvim/nixvim.nix
     ./home/kitty.nix
     ./home/fish.nix

@@ -1,4 +1,4 @@
-{ nixvim, ...}:
+{ ... }:
 {
 	imports = [ ./cmp.nix ];
 	programs.nixvim.plugins.lsp = {

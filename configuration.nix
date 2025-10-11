@@ -2,14 +2,11 @@
 # your system.  Help is available in the configuration.nix(5) man page
 # and in the NixOS manual (accessible by running ‘nixos-help’).
 
-{ config, pkgs, ... }:
-let
-	home-manager = builtins.fetchTarball https://github.com/nix-community/home-manager/archive/release-25.05.tar.gz;
-in {
+{ config, pkgs, stylix, inputs, ... }:
+{
   imports =
     [ # Include the results of the hardware scan.
       ./hardware-configuration.nix
-			(import "$home-manager/nixos")
     ];
 
 	# Colorscheme
@@ -114,9 +111,16 @@ in {
     shell = pkgs.fish;
     packages = with pkgs; [
 			google-chrome
-    #  thunderbird
     ];
   };
+
+	home-manager.users.leevisuo = {
+		imports = [ 
+				./home.nix 
+				stylix.homeManagerModules.stylix
+			];
+			home.stateVersion = "25.05";
+	};
 
   # Enable automatic login for the user.
   services.displayManager.autoLogin.enable = true;

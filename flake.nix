@@ -7,7 +7,7 @@
 			url = "github:nix-community/home-manager/release-25.05";
 			inputs.nixpkgs.follows = "nixpkgs";
 		};
-		nixvim-pkg = {
+		nixvim = {
 			url = "github:nix-community/nixvim/nixos-25.05";
 			inputs.nixpkgs.follows = "nixpkgs";
 		};    
@@ -17,7 +17,7 @@
 		};
 	};
 
-	outputs = { self, nixpkgs, home-manager, nixvim-pkg, stylix, ... }:
+	outputs = { self, nixpkgs, home-manager, stylix, ... }@inputs:
 		let
 		lib = nixpkgs.lib;
 	system = "x86_64-linux"; 
@@ -26,22 +26,14 @@
 		nixosConfigurations = {
 			nixos = lib.nixosSystem {
 				inherit system;
-				modules = [ 
-						./configuration.nix  
-						stylix.nixosModules.stylix		
-					];
-			};
-		};
-		homeConfigurations = {
-			leevisuo = home-manager.lib.homeManagerConfiguration {
-				inherit pkgs;
-				modules = [
-					./home.nix
-					stylix.homeManagerModules.stylix
-				];
-				extraSpecialArgs = {
-					nixvim = nixvim-pkg;
+				specialArgs = {
+					inherit inputs;
 				};
+				modules = [ 
+					./configuration.nix  
+					stylix.nixosModules.stylix		
+					home-manager.nixosModules.home-manager
+				];
 			};
 		};
 	};
