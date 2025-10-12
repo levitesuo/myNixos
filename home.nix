@@ -10,6 +10,7 @@
 		./home/starship.nix
 		./home/hypr/hyprland.nix
 		./home/dunst.nix
+    ./home/rofi.nix
   ];
   # Home Manager needs a bit of information about you and the paths it should
   # manage.

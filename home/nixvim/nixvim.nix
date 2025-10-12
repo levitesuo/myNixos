@@ -3,7 +3,7 @@ let
 	nixvim = import (builtins.fetchGit { 
 			url = "https://github.com/nix-community/nixvim";
 			ref = "nixos-25.05";
-			narHash = "sha256-0+hp5PqHTXEUjUnc7oFIJVILkNVC330kMeVNdayYrII=";
+			narHash = "sha256-O5cqRhOiKDCHBZze4VJBZqRjX4B+DttSkAJcTEhDv1k=";
 		});
 in
 {
@@ -17,6 +17,7 @@ in
 		./lualine.nix
 		./auto-session.nix
 		./auto-pairs.nix
+		./auto-tag.nix
 	];
   programs.nixvim = {
     enable = true;
