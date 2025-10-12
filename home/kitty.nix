@@ -1,12 +1,8 @@
 { config, lib, pkgs, ...}:
 
 {
-  imports = [
-    ./fonts.nix
-  ];
   programs.kitty = {
     enable = true;
-		themeFile = "GruvboxMaterialDarkHard";
 		shellIntegration.enableFishIntegration = true;
     extraConfig = ''
     background_opacity 0.8

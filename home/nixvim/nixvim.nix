@@ -16,6 +16,7 @@ in
 		./neo-tree.nix
 		./lualine.nix
 		./auto-session.nix
+		./auto-pairs.nix
 	];
   programs.nixvim = {
     enable = true;
@@ -26,11 +27,5 @@ in
 		globals.mapleader = " ";
 		plugins.web-devicons.enable = true;
 
-		colorschemes.gruvbox = {
-			enable = true;
-			settings = {
-				terminal_colors = true;
-			};
-		};	
 	};
 }

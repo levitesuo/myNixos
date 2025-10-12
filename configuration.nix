@@ -60,10 +60,23 @@
     LC_TELEPHONE = "fi_FI.UTF-8";
     LC_TIME = "fi_FI.UTF-8";
   };
+	
+	xdg.portal = {
+    enable = true;
+    extraPortals = [
+      # The GTK portal is often needed for Electron apps like Slack
+      pkgs.xdg-desktop-portal-gtk 
+      pkgs.xdg-desktop-portal-hyprland
+    ];
+    config = {
+      common.default = "hyprland";
+    };
+  };
 
 
 	environment.sessionVariables = {
 		WLR_NO_HARDWARE_CURSOR = "1";
+		GDK_BACKEND = "wayland,x11";
 		NIXOS_OZONE_WL = "1";
 	};
 
@@ -71,6 +84,11 @@
 		opengl.enable = true;
 		nvidia.modesetting.enable = true;
 	};
+
+	programs.hyprland.enable = true;
+	programs.hyprland.xwayland.enable = true;
+
+	services.xserver.enable = true;
 
   # Configure keymap in X11
   services.xserver.xkb = {
@@ -111,6 +129,7 @@
     extraGroups = [ "networkmanager" "wheel" ];
     shell = pkgs.fish;
     packages = with pkgs; [
+			slack
 			hyprpicker
 			google-chrome
     ];
@@ -144,6 +163,7 @@
   environment.systemPackages = with pkgs; [
 		ripgrep
     git
+		psmisc
   #  wget
   ];
 

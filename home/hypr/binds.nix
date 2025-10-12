@@ -10,6 +10,7 @@
 				"$mainMod, C, killactive"
 				"$mainMod, G, exec, google-chrome-stable --ozone-platform=x11"
 				"$mainMod, P, exec, hyprshot env HYPRSHOT_DIR=/home/leevisuo/Pictures/Screenshots hyprshot -m region"
+				"$mainMod, W, exec, killall -SIGUSR1 waybar"
 
 # Dwiddle and toggle split
 				"$mainMod, J, togglesplit, # dwindle"

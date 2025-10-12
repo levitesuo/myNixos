@@ -12,8 +12,13 @@
 	wayland.windowManager.hyprland = {
 		enable = true;
 		settings = {
+			exec-once = [
+				"sleep1; waybar &"
+				"slack &"
+			];
 			general = {
 				gaps_in = 3;
+				gaps_out = 5;
 				border_size = 5;
 				resize_on_border = true;
 				layout = "dwindle";

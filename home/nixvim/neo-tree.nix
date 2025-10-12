@@ -11,6 +11,7 @@
 			action = ":Neotree toggle<CR>";
 			key = "<leader>e";
 			options = {
+				
 				silent = true;
 				desc = "Open file browser";
 			};
