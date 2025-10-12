@@ -6,6 +6,7 @@
 		./hyprcursor.nix
 		./decoration.nix
 		./animation.nix
+		./waybar.nix
 	];
 	services.hyprpaper.enable = true;
 	wayland.windowManager.hyprland = {
