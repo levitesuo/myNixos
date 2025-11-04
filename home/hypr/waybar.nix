@@ -35,7 +35,7 @@
 						"code" = "";
 						"title<.*nvim.*" = "";
 						"slack" = "";
-					};
+					}; 
 				};
 
 				"tray" = {
@@ -49,5 +49,11 @@
 				};
 			};
 		};
+		style = ''
+            * {
+                font-family: "JetBrainsMono Nerd Font", "Symbols Nerd Font Mono";
+                font-size: 13px;
+            }
+        '';
 	};
 }

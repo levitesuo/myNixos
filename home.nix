@@ -48,6 +48,8 @@
     # '')
 		libnotify
 		hyprshot
+    nerd-fonts.jetbrains-mono
+    nerd-fonts.symbols-only
   ];
 
   # Home Manager is pretty good at managing dotfiles. The primary way to manage

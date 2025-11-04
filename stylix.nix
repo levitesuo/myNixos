@@ -1,30 +1,35 @@
 { pkgs, ... }:
 
 {
-	stylix = {
-		enable = true;
-		base16Scheme = "${pkgs.base16-schemes}/share/themes/gruvbox-dark-medium.yaml";
-		image = ./paul-chadeisson-solstice-prequel-062.jpg;
-		fonts = {
-			serif = {
-				package = pkgs.sourcecodepro;
-				name = "SourceCodePro";
-			};
+    fonts.packages = with pkgs; [
+        nerd-fonts.jetbrains-mono
+        nerd-fonts.symbols-only
+    ];
 
-			sansSerif = {
-				package = pkgs.sourcecodepro;
-				name = "SourceCodePro";
-			};
+    stylix = {
+        enable = true;
+        base16Scheme = "${pkgs.base16-schemes}/share/themes/gruvbox-dark-medium.yaml";
+        image = ./paul-chadeisson-solstice-prequel-062.jpg;
+        fonts = {
+            serif = {
+                package = pkgs.sourcecodepro;
+                name = "SourceCodePro, Symbols Nerd Font Mono, Noto Color Emoji";
+            };
 
-			monospace = {
-				package = pkgs.nerdfonts.override {fonts = ["JetBrainsMono"];};
-				name = "JetBrainsMono Nerd Font";
-			};
+            sansSerif = {
+                package = pkgs.sourcecodepro;
+                name = "SourceCodePro, Symbols Nerd Font Mono, Noto Color Emoji";
+            };
 
-			emoji = {
-				package = pkgs.noto-fonts-emoji;
-				name = "Noto Color Emoji";
-			};
-		};
-	};
+            monospace = {
+                package = pkgs.nerd-fonts.jetbrains-mono;
+                name = "JetBrainsMono Nerd Font, Symbols Nerd Font Mono, Noto Color Emoji";
+            };
+
+            emoji = {
+                package = pkgs.noto-fonts-emoji;
+                name = "Noto Color Emoji, Symbols Nerd Font Mono";
+            };
+        };
+    };
 }

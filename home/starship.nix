@@ -5,7 +5,7 @@
 		settings = {
 			os = {
 				disabled = false;
-				format = "$symbol";
+				format = "$symbols";
 				symbol = "";
 				style = "blue bold";
 			};
