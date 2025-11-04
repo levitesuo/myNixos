@@ -155,10 +155,10 @@
   environment.systemPackages = with pkgs; [
 		ripgrep
     git
-    # Required for Wayland/Hyprland
     wl-clipboard
     xdg-utils
-  #  wget
+    udisks
+    gnome-disk-utility
   ];
 
   # Some programs need SUID wrappers, can be configured further or are

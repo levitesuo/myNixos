@@ -51,6 +51,7 @@
 		hyprshot
     nerd-fonts.jetbrains-mono
     nerd-fonts.symbols-only
+    kdePackages.dolphin
   ];
 
   # Home Manager is pretty good at managing dotfiles. The primary way to manage
@@ -87,6 +88,15 @@
   home.sessionVariables = {
 		HYPRSHOT_DIR = "$HOME/Pictures/Screenshots";
     # EDITOR = "emacs";
+  };
+
+  # Set Dolphin as default file manager
+  xdg.mimeApps = {
+    enable = true;
+    defaultApplications = {
+      "inode/directory" = "org.kde.dolphin.desktop";
+      "application/x-gnome-saved-search" = "org.kde.dolphin.desktop";
+    };
   };
 
 	services.playerctld.enable = true;
