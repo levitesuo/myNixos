@@ -7,6 +7,8 @@
   imports =
     [ # Include the results of the hardware scan.
       ./hardware-configuration.nix
+      ./docker.nix
+      ./nodejs.nix
     ];
 
 	# Colorscheme
@@ -60,35 +62,21 @@
     LC_TELEPHONE = "fi_FI.UTF-8";
     LC_TIME = "fi_FI.UTF-8";
   };
-	
-	xdg.portal = {
-    enable = true;
-    extraPortals = [
-      # The GTK portal is often needed for Electron apps like Slack
-      pkgs.xdg-desktop-portal-gtk 
-      pkgs.xdg-desktop-portal-hyprland
-    ];
-    config = {
-      common.default = "hyprland";
-    };
-  };
 
 
 	environment.sessionVariables = {
 		WLR_NO_HARDWARE_CURSOR = "1";
-		GDK_BACKEND = "wayland,x11";
 		NIXOS_OZONE_WL = "1";
+		# Additional Wayland/Hyprland environment variables
+		XDG_CURRENT_DESKTOP = "Hyprland";
+		XDG_SESSION_TYPE = "wayland";
+		XDG_SESSION_DESKTOP = "Hyprland";
 	};
 
 	hardware = {
 		opengl.enable = true;
 		nvidia.modesetting.enable = true;
 	};
-
-	programs.hyprland.enable = true;
-	programs.hyprland.xwayland.enable = true;
-
-	services.xserver.enable = true;
 
   # Configure keymap in X11
   services.xserver.xkb = {
@@ -122,14 +110,13 @@
   users.defaultUserShell = pkgs.fish;
   programs.fish.enable = true;
 
-  # Define a user account. Don't forget to set a password with ‘passwd’.
+  # Define a user account. Don't forget to set a password with 'passwd'.
   users.users.leevisuo = {
     isNormalUser = true;
     description = "Leevi Suotula";
-    extraGroups = [ "networkmanager" "wheel" ];
+    extraGroups = [ "networkmanager" "wheel" "docker" ];
     shell = pkgs.fish;
     packages = with pkgs; [
-			slack
 			hyprpicker
 			google-chrome
     ];
@@ -148,9 +135,14 @@
 			home.stateVersion = "25.05";
 	};
 
-  # Enable automatic login for the user.
-  services.displayManager.autoLogin.enable = true;
-  services.displayManager.autoLogin.user = "leevisuo";
+  # Configure console auto-login and start Hyprland
+  services.getty.autologinUser = "leevisuo";
+  
+  # Enable Hyprland system-wide
+  programs.hyprland = {
+    enable = true;
+    xwayland.enable = true;
+  };
 
   # Install firefox.
   programs.firefox.enable = true;
@@ -163,7 +155,9 @@
   environment.systemPackages = with pkgs; [
 		ripgrep
     git
-		psmisc
+    # Required for Wayland/Hyprland
+    wl-clipboard
+    xdg-utils
   #  wget
   ];
 
