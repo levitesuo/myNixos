@@ -18,7 +18,6 @@ in
       ./hardware-configuration.nix
       ./docker.nix
       ./nodejs.nix
-      ./android.nix
     ];
 
 	# Colorscheme
@@ -189,7 +188,7 @@ in
 
   environment.variables.ANDROID_SDK_ROOT = "${androidComposition.androidsdk}/libexec/android-sdk";
   environment.variables.ANDROID_HOME = "${androidComposition.androidsdk}/libexec/android-sdk";
-  environment.variables.JAVA_HOME = "${pkgs.openjdk17}";
+  environment.variables.JAVA_HOME = "${pkgs.jdk17}";
 
 }
 
