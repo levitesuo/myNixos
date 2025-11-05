@@ -3,6 +3,9 @@
 # and in the NixOS manual (accessible by running ‘nixos-help’).
 
 { config, pkgs, stylix, ... }:
+let
+	androidEnv = pkgs.androidenv;
+in
 {
   imports =
     [ # Include the results of the hardware scan.
@@ -27,9 +30,9 @@
   # networking.proxy.default = "http://user:password@proxy:port/";
   # networking.proxy.noProxy = "127.0.0.1,localhost,internal.domain";
 
-  # Enable networking
+  # Enable NetworkManager
   networking.networkmanager.enable = true;
-  
+
   # Enable bluetooth
   hardware.bluetooth = {
     enable = true;
@@ -73,6 +76,17 @@
 		XDG_SESSION_DESKTOP = "Hyprland";
 	};
 
+  
+  xdg = {
+    portal = {
+      enable = true;
+      extraPortals = with pkgs; [
+        xdg-desktop-portal-wlr
+        xdg-desktop-portal-gtk
+      ];
+    };
+  };
+
 	hardware = {
 		opengl.enable = true;
 		nvidia.modesetting.enable = true;
@@ -114,9 +128,11 @@
   users.users.leevisuo = {
     isNormalUser = true;
     description = "Leevi Suotula";
-    extraGroups = [ "networkmanager" "wheel" "docker" ];
+    extraGroups = [ "networkmanager" "wheel" "docker"	"kvm" "adbusers" ];
     shell = pkgs.fish;
     packages = with pkgs; [
+			networkmanagerapplet
+      slack
 			hyprpicker
 			google-chrome
     ];
@@ -153,14 +169,24 @@
   # List packages installed in system profile. To search, run:
   # $ nix search wget
   environment.systemPackages = with pkgs; [
+		(
+			androidenv.emulateApp {
+				name = "android-emu";
+				platformVersion = "33";
+				abiVersion = "x86_64";
+				systemImageType = "google_apis_playstore";
+		})
+    android-tools
 		ripgrep
     git
     wl-clipboard
     xdg-utils
-    udisks
+    udisks2
     gnome-disk-utility
+    iwd
   ];
 
+	services.udisks2.enable = true;
   # Some programs need SUID wrappers, can be configured further or are
   # started in user sessions.
   # programs.mtr.enable = true;
@@ -189,4 +215,10 @@
   system.stateVersion = "25.05"; # Did you read the comment?
 
   nix.settings.experimental-features = [ "nix-command" "flakes" ];
+
+	# Enable Android emulator
+	programs.adb.enable = true;
+  boot.kernelModules = ["kvm-amd"];
+
 }
+

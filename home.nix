@@ -12,7 +12,6 @@
 		./home/dunst.nix
     ./home/rofi.nix
     ./home/git.nix
-    ./home/stylix.nix
   ];
   # Home Manager needs a bit of information about you and the paths it should
   # manage.
@@ -68,6 +67,59 @@
     #   org.gradle.console=verbose
     #   org.gradle.daemon.idletimeout=3600000
     # '';
+    # Helper script to start emulator (if needed) and run the project's
+    # `npm run android`. Installed as ~/.local/bin/start-android-expo
+    ".local/bin/start-android-expo".text = ''
+      #!/usr/bin/env bash
+      set -euo pipefail
+
+      PROJECT_DIR="$1"
+      if [ -z "$PROJECT_DIR" ]; then
+        PROJECT_DIR="$HOME/Project/app-asiatudio"
+      fi
+
+      AVD_NAME="android-emu"
+
+      ADB="$ADB"
+      if [ -z "$ADB" ]; then
+        ADB=adb
+      fi
+
+      EMULATOR="$EMULATOR"
+      if [ -z "$EMULATOR" ]; then
+        EMULATOR=emulator
+      fi
+
+      # If there's already a device (physical or emulator) attached, skip starting AVD
+      if $ADB devices | awk 'NR>1 && $2=="device" { found=1; exit } END { exit !found }'; then
+        echo "Device already connected."
+      else
+  echo "No device found, starting AVD '$AVD_NAME'..."
+        # start emulator in background
+  nohup $EMULATOR -avd "$AVD_NAME" >/dev/null 2>&1 &
+        # wait for adb device
+        echo "Waiting for emulator to become available..."
+        $ADB wait-for-device
+        # wait until Android reports boot complete
+        for i in $(seq 1 120); do
+          boot=$($ADB shell getprop sys.boot_completed 2>/dev/null || true)
+          boot=$(echo "$boot" | tr -d '\r' || true)
+          if [ "$boot" = "1" ]; then
+            echo "Emulator booted."
+            break
+          fi
+          sleep 1
+        done
+      fi
+
+      # Run the project's npm script from the project directory
+      cd "$PROJECT_DIR"
+      echo "Running: npm run android (in $PROJECT_DIR)"
+      npm run android
+    '';
+
+    # Make helper executable
+    ".local/bin/start-android-expo".executable = true;
   };
 
   # Home Manager can also manage your environment variables through
@@ -88,7 +140,6 @@
   #
   home.sessionVariables = {
 		HYPRSHOT_DIR = "$HOME/Pictures/Screenshots";
-    # EDITOR = "emacs";
   };
 
   # Set Dolphin as default file manager

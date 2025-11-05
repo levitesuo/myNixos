@@ -30,6 +30,10 @@
                 package = pkgs.noto-fonts-emoji;
                 name = "Noto Color Emoji, Symbols Nerd Font Mono";
             };
+            sizes = {
+                application = 9;
+                desktop = 8;
+            };
         };
     };
 }

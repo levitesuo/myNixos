@@ -26,6 +26,12 @@
 					inherit stylix;
 				};
 				modules = [ 
+					({ pkgs, ...}: {
+							nixpkgs.config = {
+								android_sdk.accept_license = true;
+								allowUnfree = true;
+							};
+						})
 					./configuration.nix  
 					stylix.nixosModules.stylix		
 					home-manager.nixosModules.home-manager
