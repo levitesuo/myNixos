@@ -4,6 +4,7 @@
 
 { config, pkgs, stylix, ... }:
 let
+	# This is a comment to force a rebuild
   androidComposition = pkgs.androidenv.composeAndroidPackages {
     platformVersions = [ "33" ]; # Android 13
     buildToolsVersions = [ "33.0.2" ];
