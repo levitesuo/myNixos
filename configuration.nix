@@ -3,6 +3,15 @@
 # and in the NixOS manual (accessible by running ‘nixos-help’).
 
 { config, pkgs, stylix, ... }:
+let
+  androidComposition = pkgs.androidenv.composeAndroidPackages {
+    platformVersions = [ "33" ]; # Android 13
+    buildToolsVersions = [ "33.0.2" ];
+    includeEmulator = true;
+    systemImageTypes = [ "google_apis" ]; # Use "google_apis_playstore" for Play Store
+    abiVersions = [ "x86_64" ]; # For most modern emulators
+  };
+in
 {
   imports =
     [ # Include the results of the hardware scan.
@@ -157,8 +166,6 @@
   nixpkgs.config.allowUnfree = true;
 
   environment.systemPackages = with pkgs; [
-    android-studio
-    android-studio-tools
 		ripgrep
     git
     wl-clipboard
@@ -166,6 +173,8 @@
     udisks2
     gnome-disk-utility
     iwd
+    androidComposition.androidsdk
+    jdk17
   ];
 
 	services.udisks2.enable = true;
@@ -174,8 +183,13 @@
   nix.settings.experimental-features = [ "nix-command" "flakes" ];
 
 	# Enable Android emulator
-	programs.adb.enable = true;
-  boot.kernelModules = ["kvm-amd"];
+	nixpkgs.config.android_sdk.accept_license = true;
+
+  programs.adb.enable = true;
+
+  environment.variables.ANDROID_SDK_ROOT = "${androidComposition.androidsdk}/libexec/android-sdk";
+  environment.variables.ANDROID_HOME = "${androidComposition.androidsdk}/libexec/android-sdk";
+  environment.variables.JAVA_HOME = "${pkgs.openjdk17}";
 
 }
 
