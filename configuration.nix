@@ -1,18 +1,8 @@
-# Edit this configuration file to define what should be installed on
+# Edit this configuration file to define what should be installed onconfi
 # your system.  Help is available in the configuration.nix(5) man page
 # and in the NixOS manual (accessible by running ‘nixos-help’).
 
 { config, pkgs, stylix, ... }:
-let
-	# This is a comment to force a rebuild
-  androidComposition = pkgs.androidenv.composeAndroidPackages {
-    platformVersions = [ "33" ]; # Android 13
-    buildToolsVersions = [ "33.0.2" ];
-    includeEmulator = true;
-    systemImageTypes = [ "google_apis" ]; # Use "google_apis_playstore" for Play Store
-    abiVersions = [ "x86_64" ]; # For most modern emulators
-  };
-in
 {
   imports =
     [ # Include the results of the hardware scan.
@@ -127,13 +117,16 @@ in
   users.users.leevisuo = {
     isNormalUser = true;
     description = "Leevi Suotula";
-    extraGroups = [ "networkmanager" "wheel" "docker"	"kvm" "adbusers" ];
+    extraGroups = [ "networkmanager" "wheel" "docker" ];
     shell = pkgs.fish;
     packages = with pkgs; [
+			vlc
 			networkmanagerapplet
       slack
 			hyprpicker
 			google-chrome
+			iio-hyprland
+			jq
     ];
   };
 
@@ -173,23 +166,21 @@ in
     udisks2
     gnome-disk-utility
     iwd
-    androidComposition.androidsdk
-    jdk17
   ];
 
 	services.udisks2.enable = true;
-  system.stateVersion = "25.05"; # Did you read the comment?
+  system.stateVersion = "25.05";
+
 
   nix.settings.experimental-features = [ "nix-command" "flakes" ];
 
-	# Enable Android emulator
-	nixpkgs.config.android_sdk.accept_license = true;
+	programs.iio-hyprland.enable = true;
 
-  programs.adb.enable = true;
-
-  environment.variables.ANDROID_SDK_ROOT = "${androidComposition.androidsdk}/libexec/android-sdk";
-  environment.variables.ANDROID_HOME = "${androidComposition.androidsdk}/libexec/android-sdk";
-  environment.variables.JAVA_HOME = "${pkgs.jdk17}";
+	services.logind.extraConfig = ''
+		HandlePowerKey=suspend
+		HandleLidSwitch=suspend
+	'';
 
 }
+
 

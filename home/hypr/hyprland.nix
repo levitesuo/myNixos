@@ -13,6 +13,7 @@
 		enable = true;
 		settings = {
 			exec-once = [
+				"iio-hyprland"
 				"sleep1; waybar &"
 				"slack &"
 			];
@@ -27,6 +28,11 @@
 				no_hardware_cursors = true;
 			};
 
+
+			input = {
+				kb_layout = "us";
+				kb_variant = "altgr-intl";
+			};
 			dwindle.pseudotile = true;
 			dwindle.preserve_split = true;
 			master.new_status = "master";
