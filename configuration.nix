@@ -14,7 +14,7 @@
 	# Colorscheme
 	stylix.enable = true;
 	stylix.base16Scheme = "${pkgs.base16-schemes}/share/themes/gruvbox-dark-medium.yaml";
-	stylix.image = ./paul-chadeisson-solstice-prequel-062.jpg; 
+	stylix.image = ./paul-chadeisson-periwinkle-pc-02-sketch.jpg; 
 	
   # Bootloader.
   boot.loader.systemd-boot.enable = true;

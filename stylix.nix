@@ -9,7 +9,7 @@
     stylix = {
         enable = true;
         base16Scheme = "${pkgs.base16-schemes}/share/themes/gruvbox-dark-medium.yaml";
-        image = ./paul-chadeisson-solstice-prequel-062.jpg;
+        image = ./paul-chadeisson-periwinkle-pc-02-sketch.jpg;
         fonts = {
             serif = {
                 package = pkgs.sourcecodepro;
