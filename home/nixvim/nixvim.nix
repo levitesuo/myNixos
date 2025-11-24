@@ -3,7 +3,7 @@ let
 	nixvim = import (builtins.fetchGit { 
 			url = "https://github.com/nix-community/nixvim";
 			ref = "nixos-25.05";
-			narHash = "sha256-ixaP8XeGRo4ZMOLlUJm1YSxMjoOMvrPN3UbMMWe2Nt8='";
+			narHash = "sha256-OuxzqKSmzs35aRPsmdmvTwRhUZqp7uLyUIYDRDUuogs=";
 		});
 in
 {
