@@ -167,6 +167,8 @@
 		ripgrep
     git
     wl-clipboard
+		xclip
+		xsel
     xdg-utils
     udisks2
     gnome-disk-utility
