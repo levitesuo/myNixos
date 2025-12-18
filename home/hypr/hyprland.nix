@@ -7,6 +7,7 @@
 		./decoration.nix
 		./animation.nix
 		./waybar.nix
+		./hyprlock.nix
 	];
 	services.hyprpaper.enable = true;
 	wayland.windowManager.hyprland = {
@@ -14,8 +15,10 @@
 		settings = {
 			exec-once = [
 				"iio-hyprland"
-				"sleep1; waybar &"
+				"sleep 1; waybar &"
 				"slack &"
+				"wl-paste --type text --watch cliphist store &"
+				"wl-paste --type image --watch cliphist store &"
 			];
 			general = {
 				gaps_in = 3;

@@ -72,6 +72,9 @@
 		XDG_CURRENT_DESKTOP = "Hyprland";
 		XDG_SESSION_TYPE = "wayland";
 		XDG_SESSION_DESKTOP = "Hyprland";
+		# Fix clipboard issues
+		MOZ_ENABLE_WAYLAND = "1";
+		CLUTTER_BACKEND = "wayland";
 	};
 
   
@@ -167,8 +170,7 @@
 		ripgrep
     git
     wl-clipboard
-		xclip
-		xsel
+		cliphist
     xdg-utils
     udisks2
     gnome-disk-utility
