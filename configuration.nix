@@ -166,6 +166,7 @@
   nixpkgs.config.allowUnfree = true;
 
   environment.systemPackages = with pkgs; [
+		pre-commit
 		tailscale
 		ripgrep
     git

@@ -22,6 +22,7 @@
   home.packages = with pkgs; [
 		libnotify
 		hyprshot
+    hyprlock
     nerd-fonts.jetbrains-mono
     nerd-fonts.symbols-only
     kdePackages.dolphin

@@ -7,9 +7,9 @@
 		./decoration.nix
 		./animation.nix
 		./waybar.nix
-		./hyprlock.nix
 	];
 	services.hyprpaper.enable = true;
+	programs.hyprlock.enable = true;
 	wayland.windowManager.hyprland = {
 		enable = true;
 		settings = {
