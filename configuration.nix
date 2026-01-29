@@ -29,7 +29,12 @@
   # networking.proxy.noProxy = "127.0.0.1,localhost,internal.domain";
 
   # Enable NetworkManager
-  networking.networkmanager.enable = true;
+  networking.networkmanager = {
+		enable = true;
+		plugins = with pkgs; [
+			networkmanager-openvpn
+		];
+};
 
   # Enable bluetooth
   hardware.bluetooth = {
@@ -166,6 +171,7 @@
   nixpkgs.config.allowUnfree = true;
 
   environment.systemPackages = with pkgs; [
+		(azure-cli.withExtensions [ azure-cli.extensions.aks-preview])
 		pre-commit
 		tailscale
 		ripgrep
