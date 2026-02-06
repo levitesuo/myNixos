@@ -139,7 +139,23 @@
 			google-chrome
 			iio-hyprland
 			jq
+      dbeaver-bin
     ];
+  };
+  fonts.packages = with pkgs; [
+  nerd-fonts.jetbrains-mono
+  nerd-fonts.symbols-only
+  noto-fonts-emoji
+];
+
+  services.postgresql = {
+    enable = true;
+    port = 5444;
+    ensureDatabases = [ "mydatabase" ];
+    authentication = pkgs.lib.mkOverride 10 ''
+      #type database  DBuser  auth-method
+      local all       all     trust
+    '';
   };
 
 	home-manager.extraSpecialArgs = {
