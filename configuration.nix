@@ -147,8 +147,8 @@
       chromium
       chromedriver
       claude-code
-			impala
 			posting
+      impala
     ];
   };
   fonts.packages = with pkgs; [

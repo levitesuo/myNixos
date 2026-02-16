@@ -48,4 +48,6 @@
   # Let Home Manager install and manage itself.
   programs.home-manager.enable = true;
 	programs.poetry.enable = true;
+
+  xdg.configFile."impala/config.toml".source = ./home/impala.toml;
 }
