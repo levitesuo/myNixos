@@ -1,67 +1,76 @@
-{ ... }:
+{ lib, ... }:
 {
-	xdg.configFile."waybar/style.css".source = ./waybar/style.css;
-	programs.waybar = {
-		enable = true;
-		settings = {
-			mainBar = {
-				layer = "top";
-				position = "top";
-				height = 20;
-				modules-right = [ "bluetooth" "pulseaudio"  "clock" ];
-				modules-center = [ "hyprland/workspaces" ];
-				modules-left = [ "battery" "network" ];
-				
-				"clock" = {
-					format = "[{:%H:%M}]";
-				};
+  # If you want to use your external CSS file, keep this and REMOVE the 'style' block below.
+  xdg.configFile."waybar/style.css".source = lib.mkForce ./style.css;
 
-				"pulseaudio" = {
-					format = "[{icon} {volume}%]";
-					format-muted = "󰖁 {volume}%";
-					format-icons.default = ["" "" ""];
-				};
+  programs.waybar = {
+    enable = true;
+    settings = {
+      mainBar = {
+        layer = "top";
+        position = "top";
+        height = 20;
+        # Fixed the typo here from "cloack" to "clock/calendar"
+        modules-left = [ "battery" "network" "custom/weather" ];
+        modules-center = [ "hyprland/workspaces" ];
+        modules-right = [ "bluetooth" "pulseaudio" "clock" "clock#calendar" ];
 
-				"bluetooth" = {
-					format = "[{icon} {num_connections}]";
-					format-icons.default = "";
-				};
+        "clock" = {
+          format = "[{:%H:%M}]";
+          tooltip-format = "<big>{:%Y %B}</big>\n<tt><small>{calendar}</small></tt>";
+        };
 
-				"hyprland/workspaces" = {
-					format = "[{name}:{windows} ]";
-					format-window-separator = " ";
-					window-rewrite-default = "";
-					window-rewrite = {
-						"title<.*youtube.*>" = "";
-						"class<Google-chrome>" = "";
-						"class<kitty>" = "";
-						"class<Spotify>" = "";
-						"class<discord>" = "";
-						"code" = "";
-						"title<.*nvim.*" = "";
-						"slack" = "";
-					}; 
-				};
+        # Using the '#' syntax allows you to have a second instance of the clock module
+        "clock#calendar" = {
+          format = "[󰃭 {:%d-%m-%Y}]";
+        };
 
-				"network" = {
-					format = "[{icon} {essid}]";
-					format-wifi = "[{icon} {essid}]";
-					format-disconnected = "[󰤮]";
-					format-icons = ["󰤯" "󰤟" "󰤢" "󰤥" "󰤨"];
-				};
+        "pulseaudio" = {
+          format = "[{icon} {volume}%]";
+          format-muted = "󰖁 {volume}%";
+          format-icons.default = ["" "" ""];
+        };
 
-				"battery" = {
-					format = "[{icon} {capacity}%]";
-					format-charging = "[{icon} {capacity}%]";
-					format-icons = ["󰁹" "󰁺" "󰁻" "󰁼" "󰁽"];
-				};
-			};
+        "bluetooth" = {
+          format = "[ {num_connections}]";
+        };
+
+        "hyprland/workspaces" = {
+          format = "[{name}:{windows} ]";
+          format-window-separator = " ";
+          window-rewrite-default = "";
+          window-rewrite = {
+            "title<.*youtube.*>" = "";
+            "class<Google-chrome>" = "";
+            "class<kitty>" = "";
+            "class<Spotify>" = "";
+            "class<discord>" = "";
+            "code" = "";
+            "title<.*nvim.*>" = "";
+            "slack" = "";
+          }; 
+        };
+
+        "network" = {
+          format-wifi = "[{icon} {essid}]";
+          format-ethernet = "[󰈀 ]";
+          format-disconnected = "[󰤮]";
+          format-icons = ["󰤯" "󰤟" "󰤢" "󰤥" "󰤨"];
+        };
+
+        "battery" = {
+          format = "[{icon} {capacity}%]";
+          format-charging = "[󱐋 {capacity}%]";
+          format-icons = ["󰁹" "󰁺" "󰁻" "󰁼" "󰁽"];
+        };
+		"custom/weather" = {
+			format= "[{text}]";
+			tooltip= true;
+			interval= 300;
+			exec= "curl -s 'wttr.in/?format=%t%c\\n' | sed 's/+//g' | sed 's/C/C /g' | sed 's/ //g'";
+			on-click= "xdg-open https://wttr.in";
 		};
-		style = ''
-            * {
-                font-family: "JetBrainsMono Nerd Font", "Symbols Nerd Font Mono";
-                font-size: 13px;
-            }
-        '';
-	};
+      };
+    };
+  };
 }
