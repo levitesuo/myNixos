@@ -2,6 +2,10 @@
 {
   # If you want to use your external CSS file, keep this and REMOVE the 'style' block below.
   xdg.configFile."waybar/style.css".source = lib.mkForce ./style.css;
+  xdg.configFile."waybar/scripts/openFloatingKitty.sh" = {
+    source = ./scripts/openFloatingKitty.sh;
+    executable = true;
+  };
 
   programs.waybar = {
     enable = true;
@@ -29,10 +33,12 @@
           format = "[{icon} {volume}%]";
           format-muted = "󰖁 {volume}%";
           format-icons.default = ["" "" ""];
+          on-click = "$HOME/.config/waybar/scripts/openFloatingKitty.sh wiremix";
         };
 
         "bluetooth" = {
-          format = "[ {num_connections}]";
+          format = "[󰂯 {num_connections}]";
+          on-click = "$HOME/.config/waybar/scripts/openFloatingKitty.sh bluetuith 500 400";
         };
 
         "hyprland/workspaces" = {

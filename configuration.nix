@@ -2,7 +2,7 @@
 # your system.  Help is available in the configuration.nix(5) man page
 # and in the NixOS manual (accessible by running ‘nixos-help’).
 
-{ config, pkgs, stylix, inputs, ... }:
+{ config, pkgs, stylix, inputs, unstable, ... }:
 {
   imports =
     [ # Include the results of the hardware scan.
@@ -22,13 +22,7 @@
 
   networking.hostName = "nixos"; # Define your hostname.
 	networking.firewall.checkReversePath = "loose";
-  # networking.wireless.enable = true;  # Enables wireless support via wpa_supplicant.
 
-  # Configure network proxy if necessary
-  # networking.proxy.default = "http://user:password@proxy:port/";
-  # networking.proxy.noProxy = "127.0.0.1,localhost,internal.domain";
-
-  # Enable iwd for wifi management (standalone, used by impala TUI)
   networking.wireless.iwd.enable = true;
 	networking.wireless.iwd.settings = {
 		General.EnableNetworkConfiguration = true;
@@ -71,16 +65,12 @@
   environment.sessionVariables = {
     WLR_NO_HARDWARE_CURSOR = "1";
     NIXOS_OZONE_WL = "1";
-    # Additional Wayland/Hyprland environment variables
     XDG_CURRENT_DESKTOP = "Hyprland";
     XDG_SESSION_TYPE = "wayland";
     XDG_SESSION_DESKTOP = "Hyprland";
-    # Fix clipboard issues
     MOZ_ENABLE_WAYLAND = "1";
     CLUTTER_BACKEND = "wayland";
-    # Ensure terminal terminfo is rich enough for curses apps like impala
     TERM = "xterm-256color";
-    # Chromedriver path for local tools
     CHROME_DRIVER_PATH = "${pkgs.chromedriver}/bin/chromedriver";
   };
 
@@ -148,9 +138,12 @@
       chromedriver
       claude-code
 			posting
-      impala
-    ];
+    ]
+    ++ (with unstable; [
+      wiremix
+    ]);
   };
+
   fonts.packages = with pkgs; [
     nerd-fonts.jetbrains-mono
     nerd-fonts.symbols-only
