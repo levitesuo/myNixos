@@ -1,4 +1,4 @@
 (# Ignore everything inside any `secrets` directory (any depth)
 **/secrets/**
-
+hardware-configuration.nix
 )
