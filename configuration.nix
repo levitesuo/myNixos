@@ -2,7 +2,7 @@
 # your system.  Help is available in the configuration.nix(5) man page
 # and in the NixOS manual (accessible by running ‘nixos-help’).
 
-{ config, pkgs, stylix, ... }:
+{ config, pkgs, stylix, inputs, ... }:
 {
   imports =
     [ # Include the results of the hardware scan.
@@ -28,13 +28,11 @@
   # networking.proxy.default = "http://user:password@proxy:port/";
   # networking.proxy.noProxy = "127.0.0.1,localhost,internal.domain";
 
-  # Enable NetworkManager
-  networking.networkmanager = {
-		enable = true;
-		plugins = with pkgs; [
-			networkmanager-openvpn
-		];
-};
+  # Enable iwd for wifi management (standalone, used by impala TUI)
+  networking.wireless.iwd.enable = true;
+	networking.wireless.iwd.settings = {
+		General.EnableNetworkConfiguration = true;
+	};
 
   # Enable bluetooth
   hardware.bluetooth = {
@@ -70,17 +68,21 @@
   };
 
 
-	environment.sessionVariables = {
-		WLR_NO_HARDWARE_CURSOR = "1";
-		NIXOS_OZONE_WL = "1";
-		# Additional Wayland/Hyprland environment variables
-		XDG_CURRENT_DESKTOP = "Hyprland";
-		XDG_SESSION_TYPE = "wayland";
-		XDG_SESSION_DESKTOP = "Hyprland";
-		# Fix clipboard issues
-		MOZ_ENABLE_WAYLAND = "1";
-		CLUTTER_BACKEND = "wayland";
-	};
+  environment.sessionVariables = {
+    WLR_NO_HARDWARE_CURSOR = "1";
+    NIXOS_OZONE_WL = "1";
+    # Additional Wayland/Hyprland environment variables
+    XDG_CURRENT_DESKTOP = "Hyprland";
+    XDG_SESSION_TYPE = "wayland";
+    XDG_SESSION_DESKTOP = "Hyprland";
+    # Fix clipboard issues
+    MOZ_ENABLE_WAYLAND = "1";
+    CLUTTER_BACKEND = "wayland";
+    # Ensure terminal terminfo is rich enough for curses apps like impala
+    TERM = "xterm-256color";
+    # Chromedriver path for local tools
+    CHROME_DRIVER_PATH = "${pkgs.chromedriver}/bin/chromedriver";
+  };
 
   
   xdg = {
@@ -127,13 +129,13 @@
   users.users.leevisuo = {
     isNormalUser = true;
     description = "Leevi Suotula";
-    extraGroups = [ "networkmanager" "wheel" "docker" ];
+    extraGroups = [ "wheel" "docker" "network" ];
     shell = pkgs.fish;
     packages = with pkgs; [
 			spotify
 			spotifyd
 			vlc
-			networkmanagerapplet
+
       slack
 			hyprpicker
 			google-chrome
@@ -145,23 +147,22 @@
       chromium
       chromedriver
       claude-code
+			impala
+			posting
     ];
   };
   fonts.packages = with pkgs; [
-  nerd-fonts.jetbrains-mono
-  nerd-fonts.symbols-only
-  noto-fonts-emoji
-];
-environment.sessionVariables = {
-  CHROME_DRIVER_PATH = "${pkgs.chromedriver}/bin/chromedriver";
-};
+    nerd-fonts.jetbrains-mono
+    nerd-fonts.symbols-only
+    noto-fonts-emoji
+  ];
 
   services.postgresql = {
     enable = true;
   };
 
 	home-manager.extraSpecialArgs = {
-		inherit  stylix;
+		inherit inputs stylix;
 	};
 
 	home-manager.backupFileExtension = ".bak";

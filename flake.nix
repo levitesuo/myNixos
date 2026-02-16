@@ -11,10 +11,10 @@
 			url = "github:danth/stylix/release-25.05";
 			inputs.nixpkgs.follows = "nixpkgs";
 		};
-		android-nixpkgs.url = "github:tadfisher/android-nixpkgs";
+		stormy.url = "github:ashish0kumar/stormy";
 	};
 
-	outputs = { self, nixpkgs, home-manager, stylix, android-nixpkgs, ... }:
+	outputs = { self, nixpkgs, home-manager, stylix,  ... }@inputs:
 		let
 		lib = nixpkgs.lib;
 	system = "x86_64-linux"; 
@@ -24,12 +24,10 @@
 			nixos = lib.nixosSystem {
 				inherit system;
 				specialArgs = {
-					inherit stylix;
-					inherit android-nixpkgs;
+					inherit inputs stylix;
 				};
-				modules = [ 
-					{ nixpkgs.overlays = [ android-nixpkgs.overlays.default ]; }
-					./configuration.nix  
+				modules = [
+					./configuration.nix
 					stylix.nixosModules.stylix		
 					home-manager.nixosModules.home-manager
 				];
