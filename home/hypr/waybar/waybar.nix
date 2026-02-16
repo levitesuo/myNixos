@@ -48,7 +48,7 @@
             "code" = "";
             "title<.*nvim.*>" = "";
             "slack" = "";
-          }; 
+          };
         };
 
         "network" = {
