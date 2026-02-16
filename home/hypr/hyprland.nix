@@ -6,7 +6,7 @@
 		./hyprcursor.nix
 		./decoration.nix
 		./animation.nix
-		./waybar.nix
+		./waybar/waybar.nix
 	];
 	services.hyprpaper.enable = true;
 	programs.hyprlock.enable = true;

@@ -1,5 +1,6 @@
 { ... }:
 {
+	xdg.configFile."waybar/style.css".source = ./waybar/style.css;
 	programs.waybar = {
 		enable = true;
 		settings = {
