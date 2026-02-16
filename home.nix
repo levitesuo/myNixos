@@ -12,6 +12,7 @@
 		./home/dunst.nix
     ./home/rofi.nix
     ./home/git.nix
+    ./home/gemini-cli.nix
   ];
   # Home Manager needs a bit of information about you and the paths it should
   # manage.

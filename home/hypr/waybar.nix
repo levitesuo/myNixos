@@ -7,9 +7,9 @@
 				layer = "top";
 				position = "top";
 				height = 20;
-				modules-right = [ "bluetooth" "mpris" "pulseaudio"  "clock" ];
+				modules-right = [ "bluetooth" "pulseaudio"  "clock" ];
 				modules-center = [ "hyprland/workspaces" ];
-				modules-left = [ "custom/home-os" "tray" "battery" "network" ];
+				modules-left = [ "battery" "network" ];
 				
 				"clock" = {
 					format = "[{:%H:%M}]";
@@ -21,6 +21,10 @@
 					format-icons.default = ["" "" ""];
 				};
 
+				"bluetooth" = {
+					format = "[{icon} {num_connections}]";
+					format-icons.default = "";
+				};
 
 				"hyprland/workspaces" = {
 					format = "[{name}:{windows} ]";
@@ -38,14 +42,17 @@
 					}; 
 				};
 
-				"tray" = {
-					icon-size = 21;
-					spacing = 10;
-					show-passive-items = true;
+				"network" = {
+					format = "[{icon} {essid}]";
+					format-wifi = "[{icon} {essid}]";
+					format-disconnected = "[󰤮]";
+					format-icons = ["󰤯" "󰤟" "󰤢" "󰤥" "󰤨"];
 				};
 
-				"custom/home-os" = {
-					format = "[ ]";
+				"battery" = {
+					format = "[{icon} {capacity}%]";
+					format-charging = "[{icon} {capacity}%]";
+					format-icons = ["󰁹" "󰁺" "󰁻" "󰁼" "󰁽"];
 				};
 			};
 		};

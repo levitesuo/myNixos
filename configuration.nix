@@ -140,6 +140,11 @@
 			iio-hyprland
 			jq
       dbeaver-bin
+      uv
+      python3
+      chromium
+      chromedriver
+      claude-code
     ];
   };
   fonts.packages = with pkgs; [
@@ -147,15 +152,12 @@
   nerd-fonts.symbols-only
   noto-fonts-emoji
 ];
+environment.sessionVariables = {
+  CHROME_DRIVER_PATH = "${pkgs.chromedriver}/bin/chromedriver";
+};
 
   services.postgresql = {
     enable = true;
-    port = 5444;
-    ensureDatabases = [ "mydatabase" ];
-    authentication = pkgs.lib.mkOverride 10 ''
-      #type database  DBuser  auth-method
-      local all       all     trust
-    '';
   };
 
 	home-manager.extraSpecialArgs = {
@@ -198,6 +200,22 @@
     udisks2
     gnome-disk-utility
     iwd
+    stdenv.cc.cc
+    zlib
+    fuse3
+    icu
+    nss
+    openssl
+    curl
+    expat
+    stdenv.cc.cc
+    zlib
+    fuse3
+    icu
+    nss
+    openssl
+    curl
+    expat
   ];
 
 	services.udisks2.enable = true;
