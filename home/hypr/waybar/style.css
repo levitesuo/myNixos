@@ -1,4 +1,68 @@
 * {
-  font-family: "JetBrainsMono Nerd Font", "Symbols Nerd Font Mono";
+  /* Try multiple common family names used by patched Nerd Fonts so fallback works
+     Common names: "Sauce Code Pro Nerd Font", "SauceCodePro Nerd Font",
+     and upstream family "Sauce Code Pro". Include symbol font fallbacks too. */
+  font-family:
+    "Sauce Code Pro Nerd Font", "SauceCodePro Nerd Font", "Sauce Code Pro",
+    "Symbols Nerd Font Mono", "Symbols Nerd Font", monospace;
   font-size: 13px;
+  color: #999999;
+  background-color: transparent;
+  border-radius: 0px;
+  border: none;
+  margin: 0px 2px;
+}
+
+/* Right side modules */
+#clock {
+  color: white;
+}
+
+/* Styling the calendar date clock */
+#clock.calendar {
+  color: #999999;
+}
+#custom-weather {
+}
+
+/* Middle modules */
+#workspaces button {
+  color: #999999;
+  transition: all 0.3s ease;
+}
+
+#workspaces button.active {
+  color: white;
+  transition: all 0.3s ease;
+}
+
+#workspaces button.special {
+  color: #999999;
+  transition: all 0.3s ease;
+}
+
+/* Left side modules */
+#bluetooth {
+}
+
+#pulseaudio {
+}
+
+#network {
+}
+
+#battery {
+}
+
+#battery.charging,
+#battery.plugged {
+}
+
+#battery.critical:not(.charging) {
+}
+
+@keyframes blink {
+  to {
+    color: #b5e8e0;
+  }
 }

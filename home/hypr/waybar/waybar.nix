@@ -13,36 +13,36 @@
       mainBar = {
         layer = "top";
         position = "top";
-        height = 20;
+        height = 15;
         # Fixed the typo here from "cloack" to "clock/calendar"
-        modules-left = [ "battery" "network" "custom/weather" ];
+        modules-left = [ "battery" "network" "pulseaudio" "bluetooth" ];
         modules-center = [ "hyprland/workspaces" ];
-        modules-right = [ "bluetooth" "pulseaudio" "clock" "clock#calendar" ];
+        modules-right = [ "custom/weather" "clock#calendar" "clock"  ];
 
         "clock" = {
-          format = "[{:%H:%M}]";
+          format = "{:%H:%M}";
           tooltip-format = "<big>{:%Y %B}</big>\n<tt><small>{calendar}</small></tt>";
         };
 
         # Using the '#' syntax allows you to have a second instance of the clock module
         "clock#calendar" = {
-          format = "[󰃭 {:%d-%m-%Y}]";
+          format = "󰃭 {:%d-%m-%Y}";
         };
 
         "pulseaudio" = {
-          format = "[{icon} {volume}%]";
+          format = "{icon} {volume}%";
           format-muted = "󰖁 {volume}%";
           format-icons.default = ["" "" ""];
           on-click = "$HOME/.config/waybar/scripts/openFloatingKitty.sh wiremix --tab output";
         };
 
         "bluetooth" = {
-          format = "[󰂯 {num_connections}]";
+          format = "󰂯 {num_connections}";
           on-click = "$HOME/.config/waybar/scripts/openFloatingKitty.sh bluetuith 500 400";
         };
 
         "hyprland/workspaces" = {
-          format = "[{name}:{windows} ]";
+          format = "{name}:{windows} ";
           format-window-separator = " ";
           window-rewrite-default = "";
           window-rewrite = {
@@ -58,22 +58,22 @@
         };
 
         "network" = {
-          format-wifi = "[{icon} {essid}]";
-          format-ethernet = "[󰈀 ]";
-          format-disconnected = "[󰤮]";
+          format-wifi = "{icon} {essid}";
+          format-ethernet = "󰈀 ";
+          format-disconnected = "󰤮";
           format-icons = ["󰤯" "󰤟" "󰤢" "󰤥" "󰤨"];
         };
 
         "battery" = {
-          format = "[{icon} {capacity}%]";
-          format-charging = "[󱐋 {capacity}%]";
+          format = "{icon} {capacity}%";
+          format-charging = "󱐋 {capacity}%";
           format-icons = ["󰁹" "󰁺" "󰁻" "󰁼" "󰁽"];
         };
 		"custom/weather" = {
-			format= "[{text}]";
+			format= "{text}";
 			tooltip= true;
 			interval= 300;
-			exec= "curl -s 'wttr.in/?format=%t%c\\n' | sed 's/+//g' | sed 's/C/C /g' | sed 's/ //g'";
+			exec= "curl -s 'wttr.in/?format=%t\\n' | sed 's/+//g' | sed 's/C/C /g' | sed 's/ //g'";
 			on-click= "$HOME/.config/waybar/scripts/openFloatingKitty.sh 'bash -c \"curl wttr.in/Helsinki?3n; exec fish\"' 700 900";
 		};
       };

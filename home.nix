@@ -20,10 +20,12 @@
 
 	nixpkgs.config.allowUnfree = true;
   home.packages = with pkgs; [
-		libnotify
-		hyprshot
+    libnotify
+    hyprshot
     hyprlock
-    nerd-fonts.jetbrains-mono
+    # Install Sauce Code Pro patched by Nerd Fonts so Waybar CSS can use it
+    nerd-fonts.sauce-code-pro
+    # keep symbols-only set for icons
     nerd-fonts.symbols-only
     kdePackages.dolphin
     ngrok
@@ -32,7 +34,9 @@
 		lazydocker
 		lazysql
 		inputs.stormy.packages.x86_64-linux.stormy
+		btop
   ];
+	
 
   # Set Dolphin as default file manager
   xdg.mimeApps = {

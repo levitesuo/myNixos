@@ -9,12 +9,9 @@
       ./hardware-configuration.nix
       ./docker.nix
       ./nodejs.nix
+			./stylix.nix
     ];
 
-	# Colorscheme
-	stylix.enable = true;
-	stylix.base16Scheme = "${pkgs.base16-schemes}/share/themes/gruvbox-dark-medium.yaml";
-	stylix.image = ./paul-chadeisson-paulchadeisson-03-cityprinter-1920.jpg; 
 	
   # Bootloader.
   boot.loader.systemd-boot.enable = true;
@@ -145,8 +142,6 @@
   };
 
   fonts.packages = with pkgs; [
-    nerd-fonts.jetbrains-mono
-    nerd-fonts.symbols-only
     noto-fonts-emoji
   ];
 
