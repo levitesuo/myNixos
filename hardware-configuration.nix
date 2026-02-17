@@ -8,7 +8,7 @@
     [ (modulesPath + "/installer/scan/not-detected.nix")
     ];
 
-  boot.initrd.availableKernelModules = [ "nvme" "xhci_pci" "thunderbolt" ];
+  boot.initrd.availableKernelModules = [ "nvme" "xhci_pci" "thunderbolt" "usb_storage" "sd_mod" ];
   boot.initrd.kernelModules = [ ];
   boot.kernelModules = [ "kvm-amd" ];
   boot.extraModulePackages = [ ];
@@ -24,16 +24,6 @@
       options = [ "fmask=0077" "dmask=0077" ];
     };
 
-  fileSystems."/var/lib/docker/overlay2/1e18448c409181a7e0c5658eddbc571aa56301daeaa3f1a0c15ddfa06bac8daf/merged" =
-    { device = "overlay";
-      fsType = "overlay";
-    };
-
-  fileSystems."/var/lib/docker/overlay2/02fd9c8bbd3a67a3702832cc4697087b9281df894fd265247dd7e5e933c59c41/merged" =
-    { device = "overlay";
-      fsType = "overlay";
-    };
-
   swapDevices =
     [ { device = "/dev/disk/by-uuid/5f7d2eda-24c1-4870-ad85-9e01cd17b7ee"; }
     ];
@@ -43,17 +33,7 @@
   # still possible to use this option, but it's recommended to use it in conjunction
   # with explicit per-interface declarations with `networking.interfaces.<interface>.useDHCP`.
   networking.useDHCP = lib.mkDefault true;
-  # networking.interfaces.br-51064998767c.useDHCP = lib.mkDefault true;
-  # networking.interfaces.br-66a0d6ffaf87.useDHCP = lib.mkDefault true;
-  # networking.interfaces.br-abf0ea623c2c.useDHCP = lib.mkDefault true;
-  # networking.interfaces.br-c98b22b94bff.useDHCP = lib.mkDefault true;
-  # networking.interfaces.br-d8d517787857.useDHCP = lib.mkDefault true;
-  # networking.interfaces.docker0.useDHCP = lib.mkDefault true;
-  # networking.interfaces.enp198s0f4u1u1.useDHCP = lib.mkDefault true;
-  # networking.interfaces.tailscale0.useDHCP = lib.mkDefault true;
-  # networking.interfaces.veth9f0c345.useDHCP = lib.mkDefault true;
-  # networking.interfaces.vethf898a3e.useDHCP = lib.mkDefault true;
-  # networking.interfaces.wlan0.useDHCP = lib.mkDefault true;
+  # networking.interfaces.wlp2s0.useDHCP = lib.mkDefault true;
 
   nixpkgs.hostPlatform = lib.mkDefault "x86_64-linux";
   hardware.cpu.amd.updateMicrocode = lib.mkDefault config.hardware.enableRedistributableFirmware;
