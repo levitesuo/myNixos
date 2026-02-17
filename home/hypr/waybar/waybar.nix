@@ -74,7 +74,7 @@
 			tooltip= true;
 			interval= 300;
 			exec= "curl -s 'wttr.in/?format=%t%c\\n' | sed 's/+//g' | sed 's/C/C /g' | sed 's/ //g'";
-			on-click= "xdg-open https://wttr.in";
+			on-click= "$HOME/.config/waybar/scripts/openFloatingKitty.sh 'bash -c \"curl wttr.in/Helsinki?3n; exec fish\"' 700 900";
 		};
       };
     };
