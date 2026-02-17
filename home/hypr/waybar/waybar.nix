@@ -33,7 +33,7 @@
           format = "[{icon} {volume}%]";
           format-muted = "󰖁 {volume}%";
           format-icons.default = ["" "" ""];
-          on-click = "$HOME/.config/waybar/scripts/openFloatingKitty.sh wiremix";
+          on-click = "$HOME/.config/waybar/scripts/openFloatingKitty.sh wiremix --tab output";
         };
 
         "bluetooth" = {

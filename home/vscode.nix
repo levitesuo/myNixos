@@ -26,7 +26,7 @@
         };
 
         # Make sure the Prettier extension is actually installed
-        extensions = with pkgs.vscode-extensions; [
+        profiles.default.extensions = with pkgs.vscode-extensions; [
             esbenp.prettier-vscode
         ];
     };
