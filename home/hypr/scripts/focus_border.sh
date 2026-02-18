@@ -9,7 +9,7 @@
 INACTIVE_COLOR_DEFAULT="rgba(595959aa)"
 ACTIVE_COLOR_DEFAULT="rgba(33ccffee) 45deg"
 # Default delay (seconds) before reverting to inactive color
-DELAY_DEFAULT=0.5
+DELAY_DEFAULT=0.1
 
 # Args: [INACTIVE_COLOR] [ACTIVE_COLOR] [DELAY]
 INACTIVE_COLOR="${1:-$INACTIVE_COLOR_DEFAULT}"
