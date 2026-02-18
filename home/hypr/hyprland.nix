@@ -17,6 +17,7 @@ in
 		./decoration.nix
 		./animation.nix
 		./waybar/waybar.nix
+		./hyprlock.nix
 	];
 
     # Deploy the focus_border script into the user's hypr config so we can run it

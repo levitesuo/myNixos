@@ -8,5 +8,11 @@
 			enabled = true;
 			range = 12;
 		};
+		blur = {
+			enabled = true;
+			size = 2;
+			passes = 3;
+		};
+
 	};
 }
