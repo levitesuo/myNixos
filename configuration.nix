@@ -119,6 +119,7 @@
     extraGroups = [ "wheel" "docker" "network" ];
     shell = pkgs.fish;
     packages = with pkgs; [
+			socat
 			spotify
 			spotifyd
 			vlc
