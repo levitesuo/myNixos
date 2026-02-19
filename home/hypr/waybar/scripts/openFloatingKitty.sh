@@ -12,7 +12,9 @@ uid="floating_$(uuidgen | cut -d'-' -f1)"
 cursor_x=$(hyprctl cursorpos -j | jq '.x')
 y_offset=40 
 pos_x=$(( cursor_x - (width / 2) ))
+monitor_width=$(hyprctl monitors -j | jq -r '.[] | select(.focused == true) | .width')
 if [ "$pos_x" -lt 0 ]; then pos_x=0; fi
+if [ "$pos_x" -gt $(( monitor_width - width )) ]; then pos_x=$(( monitor_width - width )); fi
 
 # Define the Window Rules
 hyprctl keyword windowrulev2 "float, title:^($uid)$"
