@@ -19,6 +19,8 @@ in
 		./waybar/waybar.nix
 		./inputs.nix
 		./hypridle.nix
+		./hyprlock.nix
+
 	];
 
     # Deploy the focus_border script into the user's hypr config so we can run it
