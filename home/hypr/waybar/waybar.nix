@@ -78,7 +78,7 @@
         on-click= "$HOME/.config/waybar/scripts/openFloatingKitty.sh 'bash -c \"curl wttr.in/Helsinki?3n; exec fish\"' 700 900";
       };
         "custom/dir" = {
-        format= "{text}";
+        format= " {text}";
         tooltip= true;
         interval= 3600;
         signal= 8;
