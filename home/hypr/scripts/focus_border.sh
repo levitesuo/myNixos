@@ -77,8 +77,17 @@ track_editor_dir() {
 
   case "$class" in
     code)
-      # VSCode: read actual CWD from the process via /proc
-      dir=$(readlink -f "/proc/$pid/cwd" 2>/dev/null)
+      # VSCode: multiple windows share the same pid, so /proc/$pid/cwd is
+      # unreliable. Extract the project name from the title instead.
+      # Title format: "filename - project-name - Visual Studio Code"
+      local project_name
+      project_name=$(printf '%s' "$title" | awk -F ' - ' '{print $(NF-1)}')
+      for base in "$HOME" "$HOME/Projects" "$HOME/Documents"; do
+        if [ -d "$base/$project_name" ]; then
+          dir="$base/$project_name"
+          break
+        fi
+      done
       ;;
     kitty)
       if [[ "$title" == nvim\ * ]]; then
@@ -106,6 +115,7 @@ handle() {
       hyprctl keyword general:col.active_border "$ACTIVE_COLOR"
       start_revert_timer
       track_editor_dir
+      pkill -RTMIN+8 waybar
       ;;
     *)
       ;;

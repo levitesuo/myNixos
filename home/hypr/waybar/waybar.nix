@@ -16,7 +16,7 @@
         position = "top";
         height = 15;
         # Fixed the typo here from "cloack" to "clock/calendar"
-        modules-left = [ "battery" "network" "pulseaudio" "bluetooth" ];
+        modules-left = [ "battery" "network" "pulseaudio" "bluetooth" "custom/dir" ];
         modules-center = [ "hyprland/workspaces" ];
         modules-right = [ "custom/weather" "clock#calendar" "clock"  ];
 
@@ -61,7 +61,7 @@
         "network" = {
           format-wifi = "{icon} {essid}";
           format-ethernet = "󰈀 ";
-          format-disconnected = "󰤮";
+          format-disconnected = "󰤮 ";
           format-icons = ["󰤯" "󰤟" "󰤢" "󰤥" "󰤨"];
         };
 
@@ -70,13 +70,22 @@
           format-charging = "󱐋 {capacity}%";
           format-icons = ["󰁹" "󰁺" "󰁻" "󰁼" "󰁽"];
         };
-		"custom/weather" = {
-			format= "{text}";
-			tooltip= true;
-			interval= 300;
-			exec= "curl -s 'wttr.in/?format=%t\\n' | sed 's/+//g' | sed 's/C/C /g' | sed 's/ //g'";
-			on-click= "$HOME/.config/waybar/scripts/openFloatingKitty.sh 'bash -c \"curl wttr.in/Helsinki?3n; exec fish\"' 700 900";
-		};
+      "custom/weather" = {
+        format= "{text}";
+        tooltip= true;
+        interval= 300;
+        exec= "curl -s 'wttr.in/?format=%t\\n' | sed 's/+//g' | sed 's/C/C /g' | sed 's/ //g'";
+        on-click= "$HOME/.config/waybar/scripts/openFloatingKitty.sh 'bash -c \"curl wttr.in/Helsinki?3n; exec fish\"' 700 900";
+      };
+        "custom/dir" = {
+        format= "{text}";
+        tooltip= true;
+        interval= 3600;
+        signal= 8;
+        # starship emits ANSI color escape sequences which Waybar will show
+        # literally. Strip ANSI escapes before Waybar displays the text.
+        exec= "cd \"$(cat /run/user/1000/current_editor_dir)\" && (starship module directory && starship module git_branch && starship module git_status) | perl -pe 's/\\e\\[[0-9;]*[A-Za-z]//g'";
+      };
       };
     };
   };
