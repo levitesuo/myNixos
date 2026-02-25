@@ -1,4 +1,4 @@
-{ ... } : 
+{ ... } :
 {
     services.hypridle = {
 		enable = true;
@@ -27,6 +27,5 @@
                 on-timeout = "systemctl suspend";
             }
         ];
-		};
 	};
 }

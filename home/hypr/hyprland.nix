@@ -27,6 +27,11 @@ in
       executable = true;
     };
 
+    xdg.configFile."hypr/scripts/kitty_editor_dir.sh" = {
+      source = ./scripts/kitty_editor_dir.sh;
+      executable = true;
+    };
+
 	services.hyprpaper.enable = true;
 	programs.hyprlock.enable = true;
 	wayland.windowManager.hyprland = {
