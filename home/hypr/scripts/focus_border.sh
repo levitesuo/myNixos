@@ -16,6 +16,9 @@ INACTIVE_COLOR="${1:-$INACTIVE_COLOR_DEFAULT}"
 ACTIVE_COLOR="${2:-$ACTIVE_COLOR_DEFAULT}"
 DELAY="${3:-$DELAY_DEFAULT}"
 
+# File where the current editor working directory is persisted
+EDITOR_DIR_FILE="${XDG_RUNTIME_DIR:-/tmp}/current_editor_dir"
+
 if [ "$1" = "-h" ] || [ "$1" = "--help" ]; then
   cat <<EOF
 Usage: $0 [INACTIVE_COLOR] [ACTIVE_COLOR] [DELAY]
@@ -64,12 +67,45 @@ start_revert_timer() {
   REVERT_PID=$!
 }
 
+track_editor_dir() {
+  local win_info class title pid dir=""
+  win_info=$(hyprctl activewindow -j 2>/dev/null) || return
+
+  class=$(printf '%s' "$win_info" | jq -r '.class')
+  title=$(printf '%s' "$win_info" | jq -r '.title')
+  pid=$(printf '%s' "$win_info" | jq -r '.pid')
+
+  case "$class" in
+    code)
+      # VSCode: read actual CWD from the process via /proc
+      dir=$(readlink -f "/proc/$pid/cwd" 2>/dev/null)
+      ;;
+    kitty)
+      if [[ "$title" == nvim\ * ]]; then
+        local path="${title#nvim }"
+        # Expand leading ~
+        path="${path/#\~/$HOME}"
+        if [ -d "$path" ]; then
+          dir="$path"
+        elif [ -f "$path" ]; then
+          dir=$(dirname "$path")
+        fi
+      fi
+      ;;
+  esac
+
+  if [ -n "$dir" ] && [ -d "$dir" ]; then
+    printf '%s\n' "$dir" > "$EDITOR_DIR_FILE"
+  fi
+}
+
 handle() {
   case "$1" in
     activewindowv2*)
       # Immediately set active color and (re)start the revert timer.
       hyprctl keyword general:col.active_border "$ACTIVE_COLOR"
       start_revert_timer
+      track_editor_dir
       ;;
     *)
       ;;

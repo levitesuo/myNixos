@@ -6,7 +6,8 @@
     source = ./scripts/openFloatingKitty.sh;
     executable = true;
   };
-
+  # New module not yet implemented
+  # cd "$(cat /run/user/1000/current_editor_dir)" && starship module directory && starship module git_branch && starship module git_status
   programs.waybar = {
     enable = true;
     settings = {
