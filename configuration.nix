@@ -128,7 +128,6 @@
 			spotify
 			spotifyd
 			vlc
-
       slack
 			hyprpicker
 			google-chrome
@@ -210,7 +209,7 @@
     nss
     openssl
     curl
-    expat
+    brightnessctl
   ];
 
 	services.udisks2.enable = true;

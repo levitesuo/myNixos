@@ -18,6 +18,7 @@ in
 		./animation.nix
 		./waybar/waybar.nix
 		./inputs.nix
+		./hypridle.nix
 	];
 
     # Deploy the focus_border script into the user's hypr config so we can run it
@@ -34,7 +35,7 @@ in
 			exec-once = [
 				"iio-hyprland"
 				"sleep 1; waybar &"
-				"slack &"
+				"hyprlock &"
 				"wl-paste --type text --watch cliphist store &"
 				"wl-paste --type image --watch cliphist store &"
 				# start the focus_border listener with Stylix-derived colors
