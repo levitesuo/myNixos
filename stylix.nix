@@ -10,5 +10,8 @@
         enable = true;
         base16Scheme = "${pkgs.base16-schemes}/share/themes/selenized-black.yaml";
         image = ./green-knights.jpg;
+				targets = {
+					grub.useWallpaper = true;
+				};
     };
 }
