@@ -17,7 +17,7 @@ in
 		./decoration.nix
 		./animation.nix
 		./waybar/waybar.nix
-		./hyprlock.nix
+		./inputs.nix
 	];
 
     # Deploy the focus_border script into the user's hypr config so we can run it
@@ -51,11 +51,6 @@ in
 			};
 			cursor = {
 				no_hardware_cursors = true;
-			};
-
-			input = {
-				kb_layout = "us";
-				kb_variant = "altgr-intl";
 			};
 			
 			dwindle.pseudotile = true;

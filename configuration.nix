@@ -136,6 +136,7 @@
       chromedriver
       claude-code
 			posting
+      libreoffice
     ]
     ++ (with unstable; [
       wiremix
