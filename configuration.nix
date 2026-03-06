@@ -10,7 +10,7 @@
       ./docker.nix
       ./nodejs.nix
 			./stylix.nix
-      ./azure-cli.nix
+      ./azure-and-vpn.nix
     ];
 
 	
