@@ -13,6 +13,7 @@
     ./home/rofi.nix
     ./home/git.nix
     ./home/yazi.nix
+    ./home/k9s.nix
   ];
   # Home Manager needs a bit of information about you and the paths it should
   # manage.
@@ -34,6 +35,7 @@
 		bluetuith
 		lazydocker
 		lazysql
+		k9s
 		inputs.stormy.packages.x86_64-linux.stormy
 		btop
   ];
@@ -53,4 +55,15 @@
   # Let Home Manager install and manage itself.
   programs.home-manager.enable = true;
 	programs.poetry.enable = true;
+
+  programs.ssh = {
+    enable = true;
+    matchBlocks = {
+      "10.254.0.16" = {
+        extraOptions = {
+          SetEnv = "TERM=xterm-256color";
+        };
+      };
+    };
+  };
 }

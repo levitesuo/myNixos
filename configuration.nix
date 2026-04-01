@@ -181,6 +181,8 @@
 
   environment.systemPackages = with pkgs; [
 		(azure-cli.withExtensions [ azure-cli.extensions.aks-preview])
+		kubectl
+		kubelogin
 		pre-commit
 		ripgrep
     git
@@ -208,7 +210,10 @@
     brightnessctl
   ];
 
+	services.resolved.enable = true;
 	services.udisks2.enable = true;
+  services.gnome.gnome-keyring.enable = true;
+  security.pam.services.login.enableGnomeKeyring = true;
   system.stateVersion = "25.05";
 
 

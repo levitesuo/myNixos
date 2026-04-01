@@ -13,7 +13,7 @@ update_ms = 1000
 # Show full process names
 proc_full_name = false
 truecolor = true
-theme_background = false
+theme_background = False
 
 color_theme = 'TTY'
 '';
