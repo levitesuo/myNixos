@@ -55,6 +55,8 @@
             "code" = "";
             "title<.*nvim.*>" = "";
             "slack" = "";
+						"class<DBeaver>"="";
+						"title<.*TRX50.*>"="";
           };
         };
 

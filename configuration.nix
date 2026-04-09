@@ -137,6 +137,7 @@
       claude-code
 			posting
       libreoffice
+			minikube
     ]
     ++ (with unstable; [
       wiremix
@@ -183,6 +184,9 @@
 		(azure-cli.withExtensions [ azure-cli.extensions.aks-preview])
 		kubectl
 		kubelogin
+		kubernetes-helm
+		terraform
+		terragrunt
 		pre-commit
 		ripgrep
     git
