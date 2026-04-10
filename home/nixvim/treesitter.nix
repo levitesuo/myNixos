@@ -9,5 +9,13 @@
 			indent.enable = true;
 		};
 	};
+
+	# Detect Helm template files as 'helm' filetype so the helm treesitter
+	# parser is used instead of yaml (which breaks on {{ }} template syntax)
+	programs.nixvim.filetype.pattern = {
+		".*/templates/.*\\.yaml" = "helm";
+		".*/templates/.*\\.yml"  = "helm";
+		".*/templates/.*\\.tpl"  = "helm";
+	};
 }
 

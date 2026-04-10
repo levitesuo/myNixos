@@ -9,6 +9,15 @@
 			"<leader>fg" = {
 				action = "live_grep";
 			};
+			"<leader>gs" = {
+				action = "git_status";
+			};
+			"<leader>gc" = {
+				action = "git_commits";
+			};
+			"<leader>gb" = {
+				action = "git_branches";
+			};
 		};
 	};
 }
