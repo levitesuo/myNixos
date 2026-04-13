@@ -4,6 +4,7 @@ programs.nixvim.opts = {
       updatetime = 100;
       relativenumber = true;
       number = true;
+      ignorecase = true;
       smartcase = true;
       scrolloff = 8;
       tabstop = 2;
