@@ -21,6 +21,7 @@ in
 		./conform.nix
 		./gitsigns.nix
 		./which-key.nix
+		./git-diff-search.nix
 	];
   programs.nixvim = {
     enable = true;
