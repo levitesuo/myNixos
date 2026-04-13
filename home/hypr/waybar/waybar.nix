@@ -57,6 +57,8 @@
             "slack" = "";
 						"class<DBeaver>"="";
 						"title<.*TRX50.*>"="";
+						"title<.*K9s.*>"="";
+						"title<.*Claude Code.*>"="";
           };
         };
 
