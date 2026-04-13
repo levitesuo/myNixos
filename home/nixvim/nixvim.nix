@@ -20,6 +20,7 @@ in
 		./auto-tag.nix
 		./conform.nix
 		./gitsigns.nix
+		./which-key.nix
 	];
   programs.nixvim = {
     enable = true;
