@@ -22,6 +22,7 @@ in
 		./gitsigns.nix
 		./which-key.nix
 		./git-diff-search.nix
+		./markdown.nix
 	];
   programs.nixvim = {
     enable = true;

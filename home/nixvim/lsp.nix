@@ -15,6 +15,7 @@
 			nixd.enable = true;
 			terraformls.enable = true;
 			helm_ls.enable = true;
+			marksman.enable = true;
 		};
 	};
 }

@@ -10,6 +10,7 @@
         { __unkeyed-1 = "<leader>g"; group = "Git"; }
         { __unkeyed-1 = "<leader>h"; group = "Hunk"; }
         { __unkeyed-1 = "<leader>e"; group = "Explorer"; }
+        { __unkeyed-1 = "<leader>m"; group = "Markdown"; }
       ];
     };
   };
