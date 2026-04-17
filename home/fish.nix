@@ -58,6 +58,18 @@
       argo_pw = "kubectl get secret argocd-initial-admin-secret -n argocd -o jsonpath='{.data.password}' | base64 --decode";
     };
 
+    functions = {
+      argo = ''
+        echo "ArgoCD password:"
+        kubectl get secret argocd-initial-admin-secret -n argocd -o jsonpath='{.data.password}' | base64 --decode
+        echo ""
+        echo "Starting port-forward on localhost:1234 ..."
+        kubectl port-forward svc/argocd-server -n argocd 1234:443 &
+        sleep 1
+        xdg-open http://localhost:1234
+      '';
+    };
+
     # Add npm global binaries to PATH
     shellInit = ''
       # Add npm global packages to PATH
