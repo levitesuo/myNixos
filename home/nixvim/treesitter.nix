@@ -7,6 +7,15 @@
 		settings = {
 			highlight.enable = true;
 			indent.enable = true;
+			incremental_selection = {
+				enable = true;
+				keymaps = {
+					init_selection = "<M-space>";
+					node_incremental = "<space>";
+					scope_incremental = false;
+					node_decremental = "<bs>";
+				};
+			};
 		};
 	};
 

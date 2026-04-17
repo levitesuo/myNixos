@@ -34,6 +34,11 @@ in
       executable = true;
     };
 
+    xdg.configFile."hypr/scripts/rename_workspace.sh" = {
+      source = ./scripts/rename_workspace.sh;
+      executable = true;
+    };
+
 	services.hyprpaper.enable = true;
 	programs.hyprlock.enable = true;
 	wayland.windowManager.hyprland = {
