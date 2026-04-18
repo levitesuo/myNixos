@@ -11,6 +11,8 @@
 				"$mainMod, C, killactive"
 				"$mainMod, R, exec, rofi -show drun"
 				"$mainMod, G, exec, google-chrome-stable --ozone-platform=x11"
+				"$mainMod, T, exec, $HOME/.config/hypr/scripts/focus_last_class.sh kitty"
+				"$mainMod, B, exec, $HOME/.config/hypr/scripts/focus_last_class.sh google-chrome-stable"
 				"$mainMod, P, exec, hyprshot env HYPRSHOT_DIR=/home/leevisuo/Pictures/Screenshots hyprshot -m region"
 				"$mainMod, W, exec, killall -SIGUSR1 waybar"
 				"$mainMod, L, exec, hyprlock"

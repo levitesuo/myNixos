@@ -19,6 +19,8 @@
       gb   = "git branch";
       gd   = "git diff";
       glog = "git log --oneline --graph --decorate";
+			gr   = "git restore"; 
+			gra  = "git restore .";
 
       # kubectl — base
       k    = "kubectl";
@@ -59,6 +61,8 @@
     };
 
     functions = {
+      fish_greeting = "";
+
       argo = ''
         echo "ArgoCD password:"
         kubectl get secret argocd-initial-admin-secret -n argocd -o jsonpath='{.data.password}' | base64 --decode

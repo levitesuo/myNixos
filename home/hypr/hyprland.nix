@@ -34,6 +34,11 @@ in
       executable = true;
     };
 
+    xdg.configFile."hypr/scripts/focus_last_class.sh" = {
+      source = ./scripts/focus_last_class.sh;
+      executable = true;
+    };
+
 	services.hyprpaper.enable = true;
 	programs.hyprlock.enable = true;
 	wayland.windowManager.hyprland = {
