@@ -80,6 +80,12 @@ in
 				"noblur, class:^()$, title:^()$"
 				"norounding, class:^()$, title:^()$"
 			];
+
+			# Blur rofi's layer surface so the transparent theme shows frosted glass
+			layerrule = [
+				"blur, rofi"
+				"ignorezero, rofi"
+			];
 		};
 	};
 }
