@@ -37,8 +37,6 @@
                 width = mkLiteral "600px";
                 border-radius = mkLiteral "4px";
                 background-color = mkLiteral "#${colors.base00}26";
-                border = mkLiteral "1px solid";
-                border-color = mkLiteral "#${colors.base0D}80";
             };
 
             "mainbox" = {
@@ -106,7 +104,7 @@
             };
 
             "element selected.normal" = {
-                background-color = mkLiteral "#${colors.base0D}bf";
+                background-color = mkLiteral "#${colors.base0D}22";
                 text-color = mkLiteral "#${colors.base00}";
                 border-radius = mkLiteral "2px";
             };

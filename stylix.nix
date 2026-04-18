@@ -8,7 +8,7 @@
 
     stylix = {
         enable = true;
-        base16Scheme = "${pkgs.base16-schemes}/share/themes/selenized-black.yaml";
+        base16Scheme = "${pkgs.base16-schemes}/share/themes/atelier-plateau.yaml";
         image = ./black-pattern.jpg;
     };
 }
