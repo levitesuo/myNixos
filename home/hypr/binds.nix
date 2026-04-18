@@ -14,8 +14,6 @@
 				"$mainMod, P, exec, hyprshot env HYPRSHOT_DIR=/home/leevisuo/Pictures/Screenshots hyprshot -m region"
 				"$mainMod, W, exec, killall -SIGUSR1 waybar"
 				"$mainMod, L, exec, hyprlock"
-				"$mainMod, N, exec, $HOME/.config/hypr/scripts/rename_workspace.sh"
-
 # Dwiddle and toggle split
 				"$mainMod, J, togglesplit, # dwindle"
 				"$mainMod, K, swapsplit"
@@ -25,9 +23,6 @@
 				"$mainMod, down, movefocus, d"
 				"$mainMod, left, movefocus, l"
 				"$mainMod, right, movefocus, r"
-
-# Reload home-manager
-				"$mainMod, H, exec, sh -c 'home-manager switch --flake ~/.dotfiles/ && dunstify \" Home Manager\" \"Configuration successfully applied! \" || dunstify -u critical \" Home Manager\" \"Configuration failed to apply! \"'"
 		] ++ (
 # Bind workspaces to SUPER + <num>
 				builtins.concatLists(builtins.genList(i:
