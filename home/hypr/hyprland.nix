@@ -39,6 +39,11 @@ in
       executable = true;
     };
 
+    xdg.configFile."hypr/scripts/focus_window_picker.sh" = {
+      source = ./scripts/focus_window_picker.sh;
+      executable = true;
+    };
+
 	services.hyprpaper.enable = true;
 	programs.hyprlock.enable = true;
 	wayland.windowManager.hyprland = {
