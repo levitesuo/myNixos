@@ -10,7 +10,7 @@
 			"$mainMod, RETURN, exec, $HOME/.config/hypr/scripts/kitty_editor_dir.sh"
 				"$mainMod, C, killactive"
 				"$mainMod, R, exec, rofi -show drun"
-				"$mainMod, G, exec, google-chrome-stable --ozone-platform=wayland"
+				"$mainMod, G, exec, google-chrome-stable --ozone-platform=x11"
 				"$mainMod, P, exec, hyprshot env HYPRSHOT_DIR=/home/leevisuo/Pictures/Screenshots hyprshot -m region"
 				"$mainMod, W, exec, killall -SIGUSR1 waybar"
 				"$mainMod, L, exec, hyprlock"

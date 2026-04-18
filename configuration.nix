@@ -134,13 +134,13 @@
       python3
       chromium
       chromedriver
-      claude-code
 			posting
       libreoffice
 			minikube
     ]
     ++ (with unstable; [
       wiremix
+      claude-code
     ]);
   };
 
