@@ -91,5 +91,6 @@ k9s:
 k9s:
   ui:
     skin: stylix
+    useFullGVRTitle: true
 '';
 }
