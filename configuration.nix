@@ -14,7 +14,14 @@
 	
   # Bootloader.
   boot.loader.systemd-boot.enable = true;
+  boot.loader.systemd-boot.configurationLimit = 5;
   boot.loader.efi.canTouchEfiVariables = true;
+
+  nix.gc = {
+    automatic = true;
+    dates = "weekly";
+    options = "--delete-old";
+  };
 
   networking.hostName = hostname;
 	networking.firewall.checkReversePath = "loose";

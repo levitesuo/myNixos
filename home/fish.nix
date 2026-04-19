@@ -68,9 +68,10 @@
         set host (hostname)
 
         if not contains $host ls-laptop ls-workstation
-            echo "Unknown host '$host' — expected 'laptop' or 'workstation'"
+            echo "Unknown host '$host' — expected 'ls-laptop' or 'ls-workstation'"
             return 1
         end
+        set flake_target (string replace 'ls-' "" $host)
 
         set dirty (git -C $dotfiles status --porcelain)
         if test -n "$dirty"
@@ -125,8 +126,28 @@
             end
         end
 
-        echo "=> Building NixOS ($host) ..."
-        sudo nixos-rebuild switch --flake $dotfiles#$host
+        # Derive a profile name from the latest commit message
+        set raw (git -C $dotfiles log -1 --pretty=%s)
+        set base (echo $raw | tr ' /' '-' | tr -cd '[:alnum:]._-' | string sub -l 60)
+        test -z "$base"; and set base build
+
+        # Find a unique name — increment [#] prefix if profile already exists
+        set label $base
+        set n 1
+        set pdir /nix/var/nix/profiles/system-profiles
+        while test -L "$pdir/$label"
+            set n (math $n + 1)
+            set label "[$n]$base"
+        end
+
+        echo "=> Building NixOS ($host) — $label"
+        sudo nixos-rebuild switch --flake $dotfiles#$flake_target --profile-name $label
+
+        # Prune: keep only the 5 most recent profiles
+        set old_profiles (ls -dt $pdir/*/ 2>/dev/null | tail -n +6)
+        for p in $old_profiles
+            sudo nix-env -p $p --delete-generations old 2>/dev/null
+        end
       '';
 
       argo = ''
