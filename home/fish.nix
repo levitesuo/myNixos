@@ -63,6 +63,72 @@
     functions = {
       fish_greeting = "";
 
+      nix-build = ''
+        set dotfiles $HOME/.dotfiles
+        set host (hostname)
+
+        if not contains $host ls-laptop ls-workstation
+            echo "Unknown host '$host' — expected 'laptop' or 'workstation'"
+            return 1
+        end
+
+        set dirty (git -C $dotfiles status --porcelain)
+        if test -n "$dirty"
+            echo "Uncommitted changes:"
+            git -C $dotfiles status --short
+            echo ""
+            echo "[1] Commit with a message"
+            echo "[2] Amend previous commit"
+            echo "[3] Generate commit message with Claude"
+            echo "[q] Abort"
+            read -l -P "Choice: " choice
+            switch $choice
+                case 1
+                    read -l -P "Commit message: " msg
+                    if test -z "$msg"
+                        echo "Commit message cannot be empty"
+                        return 1
+                    end
+                    git -C $dotfiles add --all
+                    git -C $dotfiles commit -m $msg
+                    or return 1
+                case 2
+                    git -C $dotfiles add --all
+                    git -C $dotfiles commit --amend --no-edit
+                    or return 1
+                case 3
+                    echo "Generating commit message..."
+                    set diff (git -C $dotfiles diff --stat; git -C $dotfiles diff | head -150)
+                    set msg (echo $diff | claude -p "Write a concise git commit message (max 72 chars) for these changes. Output only the message, nothing else." --model claude-haiku-4-5-20251001)
+                    if test -z "$msg"
+                        echo "Failed to generate commit message"
+                        return 1
+                    end
+                    echo "Proposed message: $msg"
+                    read -l -P "Use this message? [Y/n/e(dit)]: " confirm
+                    switch $confirm
+                        case ''' Y y
+                            # use as-is
+                        case e E
+                            read -l -P "Edit message: " edited
+                            test -n "$edited" && set msg $edited
+                        case '*'
+                            echo "Aborted"
+                            return 0
+                    end
+                    git -C $dotfiles add --all
+                    git -C $dotfiles commit -m $msg
+                    or return 1
+                case '*'
+                    echo "Aborted"
+                    return 0
+            end
+        end
+
+        echo "=> Building NixOS ($host) ..."
+        sudo nixos-rebuild switch --flake $dotfiles#$host
+      '';
+
       argo = ''
         echo "ArgoCD password:"
         kubectl get secret argocd-initial-admin-secret -n argocd -o jsonpath='{.data.password}' | base64 --decode

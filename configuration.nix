@@ -16,7 +16,7 @@
   boot.loader.systemd-boot.enable = true;
   boot.loader.efi.canTouchEfiVariables = true;
 
-  networking.hostName = "nixos"; # Define your hostname.
+  networking.hostName = hostname;
 	networking.firewall.checkReversePath = "loose";
 
   networking.wireless.iwd.enable = true;

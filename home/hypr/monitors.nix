@@ -12,7 +12,7 @@ let
 in
 {
 	wayland.windowManager.hyprland.settings.monitor =
-		if hostname == "laptop" then laptopMonitors
-		else if hostname == "workstation" then workstationMonitors
+		if hostname == "ls-laptop" then laptopMonitors
+		else if hostname == "ls-workstation" then workstationMonitors
 		else [];
 }
