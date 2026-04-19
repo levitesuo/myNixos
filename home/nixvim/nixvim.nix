@@ -23,6 +23,7 @@ in
 		./which-key.nix
 		./git-diff-search.nix
 		./markdown.nix
+		./colorizer.nix
 	];
   programs.nixvim = {
     enable = true;
