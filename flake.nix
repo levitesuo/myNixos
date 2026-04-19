@@ -27,6 +27,7 @@
 				inherit system;
 				specialArgs = {
 					inherit inputs stylix unstable;
+					hostname = "workstation";
 				};
 				modules = [
 					./configuration.nix
@@ -39,6 +40,7 @@
 				inherit system;
 				specialArgs = {
 					inherit inputs stylix unstable;
+					hostname = "laptop";
 				};
 				modules = [
 					./configuration.nix

@@ -2,7 +2,7 @@
 # your system.  Help is available in the configuration.nix(5) man page
 # and in the NixOS manual (accessible by running ‘nixos-help’).
 
-{ config, pkgs, stylix, inputs, unstable, ... }:
+{ config, pkgs, stylix, inputs, unstable, hostname, ... }:
 {
   imports =
     [ ./docker.nix
@@ -151,7 +151,7 @@
   };
 
 	home-manager.extraSpecialArgs = {
-		inherit inputs stylix;
+		inherit inputs stylix hostname;
 	};
 
 	home-manager.backupFileExtension = ".bak";
