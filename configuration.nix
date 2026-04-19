@@ -5,9 +5,7 @@
 { config, pkgs, stylix, inputs, unstable, ... }:
 {
   imports =
-    [ # Include the results of the hardware scan.
-      ./hardware-configuration.nix
-      ./docker.nix
+    [ ./docker.nix
       ./nodejs.nix
 			./stylix.nix
       ./azure-and-vpn.nix

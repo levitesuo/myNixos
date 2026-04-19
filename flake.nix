@@ -23,14 +23,27 @@
 	unstable = import nixpkgs-unstable { inherit system; config.allowUnfree = true; };
 	in {
 		nixosConfigurations = {
-			nixos = lib.nixosSystem {
+			workstation = lib.nixosSystem {
 				inherit system;
 				specialArgs = {
 					inherit inputs stylix unstable;
 				};
 				modules = [
 					./configuration.nix
-					stylix.nixosModules.stylix		
+					./hosts/workstation/hardware-configuration.nix
+					stylix.nixosModules.stylix
+					home-manager.nixosModules.home-manager
+				];
+			};
+			laptop = lib.nixosSystem {
+				inherit system;
+				specialArgs = {
+					inherit inputs stylix unstable;
+				};
+				modules = [
+					./configuration.nix
+					./hosts/laptop/hardware-configuration.nix
+					stylix.nixosModules.stylix
 					home-manager.nixosModules.home-manager
 				];
 			};
