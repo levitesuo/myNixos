@@ -9,6 +9,7 @@
       ga   = "git add";
       gaa  = "git add --all";
       gs   = "git status";
+      gss  = "git status --short";
       gc   = "git commit";
       gcm  = "git commit -m";
       gp   = "git push";
