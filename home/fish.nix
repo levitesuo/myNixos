@@ -4,7 +4,7 @@
   programs.fish = {
     enable = true;
 
-    shellAbbreviations = {
+    shellAbbrs = {
       # Git
       ga   = "git add";
       gaa  = "git add --all";
