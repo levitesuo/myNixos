@@ -79,6 +79,9 @@ in
 				"float, class:^()$, title:^()$"
 				"noblur, class:^()$, title:^()$"
 				"norounding, class:^()$, title:^()$"
+				"float, class:^(io.github.alextren.Planify)$"
+				"center, class:^(io.github.alextren.Planify)$"
+				"size 1200 800, class:^(io.github.alextren.Planify)$"
 			];
 
 			# Blur rofi's layer surface so the transparent theme shows frosted glass

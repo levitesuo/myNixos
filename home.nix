@@ -39,6 +39,8 @@
 		inputs.stormy.packages.x86_64-linux.stormy
 		btop
 		argocd
+		bruno
+		planify
   ];
 	
 
