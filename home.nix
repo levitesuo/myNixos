@@ -45,11 +45,73 @@
 	
 
   # Set Dolphin as default file manager
+  xdg.desktopEntries."kitty-nvim" = {
+    name = "Neovim (Kitty)";
+    genericName = "Text Editor";
+    exec = "kitty nvim %F";
+    terminal = false;
+    type = "Application";
+    categories = [ "Utility" "TextEditor" ];
+    mimeType = [
+      "text/plain"
+      "text/markdown"
+      "text/x-markdown"
+      "text/css"
+      "text/xml"
+      "text/x-python"
+      "text/x-shellscript"
+      "text/x-lua"
+      "text/x-go"
+      "text/x-rust"
+      "text/x-c"
+      "text/x-csrc"
+      "text/x-chdr"
+      "text/x-c++src"
+      "text/x-c++hdr"
+      "text/x-java"
+      "text/x-yaml"
+      "text/javascript"
+      "text/x-nix"
+      "application/json"
+      "application/xml"
+      "application/x-yaml"
+      "application/x-shellscript"
+      "application/javascript"
+      "application/typescript"
+      "application/toml"
+    ];
+  };
+
   xdg.mimeApps = {
     enable = true;
     defaultApplications = {
       "inode/directory" = "org.kde.dolphin.desktop";
       "application/x-gnome-saved-search" = "org.kde.dolphin.desktop";
+      "x-scheme-handler/http" = "chromium-browser.desktop";
+      "x-scheme-handler/https" = "chromium-browser.desktop";
+      "x-scheme-handler/ftp" = "chromium-browser.desktop";
+      "text/html" = "chromium-browser.desktop";
+      "application/xhtml+xml" = "chromium-browser.desktop";
+      "application/json" = "kitty-nvim.desktop";
+      "text/plain" = "kitty-nvim.desktop";
+      "text/markdown" = "kitty-nvim.desktop";
+      "text/x-markdown" = "kitty-nvim.desktop";
+      "text/css" = "kitty-nvim.desktop";
+      "text/xml" = "kitty-nvim.desktop";
+      "application/xml" = "kitty-nvim.desktop";
+      "text/x-python" = "kitty-nvim.desktop";
+      "text/x-shellscript" = "kitty-nvim.desktop";
+      "application/x-shellscript" = "kitty-nvim.desktop";
+      "text/x-lua" = "kitty-nvim.desktop";
+      "text/x-go" = "kitty-nvim.desktop";
+      "text/x-rust" = "kitty-nvim.desktop";
+      "text/x-yaml" = "kitty-nvim.desktop";
+      "application/x-yaml" = "kitty-nvim.desktop";
+      "text/javascript" = "kitty-nvim.desktop";
+      "application/javascript" = "kitty-nvim.desktop";
+      "application/typescript" = "kitty-nvim.desktop";
+      "application/toml" = "kitty-nvim.desktop";
+      "text/x-nix" = "kitty-nvim.desktop";
     };
   };
 
