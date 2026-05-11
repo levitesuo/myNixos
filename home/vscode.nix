@@ -23,11 +23,20 @@
             "[html]" = { "editor.defaultFormatter" = "esbenp.prettier-vscode"; };
             "[css]" = { "editor.defaultFormatter" = "esbenp.prettier-vscode"; };
             "[markdown]" = { "editor.defaultFormatter" = "esbenp.prettier-vscode"; };
+
+            # Python formatting with Black
+            "[python]" = { "editor.defaultFormatter" = "ms-python.black-formatter"; };
+
+            # Pylance performance
+            "python.analysis.diagnosticMode" = "openFilesOnly";
+            "python.analysis.indexing" = false;
+            "python.analysis.exclude" = ["**/__pycache__" ".venv" "**/*.pyc" "**/node_modules"];
         };
 
         # Make sure the Prettier extension is actually installed
         profiles.default.extensions = with pkgs.vscode-extensions; [
             esbenp.prettier-vscode
+            ms-python.black-formatter
         ];
     };
 }

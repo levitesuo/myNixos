@@ -41,6 +41,8 @@
 		argocd
 		bruno
 		planify
+		gh
+		gnumake
   ];
 	
 

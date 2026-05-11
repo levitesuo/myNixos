@@ -31,6 +31,11 @@ let
           + " svc/${service} ${toString port}:${toString port}";
         Restart    = "always";
         RestartSec = "10s";
+        User  = "leevisuo";
+        Group = "users";
+        # Allow binding to privileged ports (443) as non-root
+        AmbientCapabilities  = "CAP_NET_BIND_SERVICE";
+        CapabilityBoundingSet = "CAP_NET_BIND_SERVICE";
         Environment = [
           "HOME=/home/leevisuo"
           "KUBECONFIG=${kubeconfig}"

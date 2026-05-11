@@ -111,6 +111,19 @@
     alsa.enable = true;
     alsa.support32Bit = true;
     pulse.enable = true;
+    wireplumber.extraConfig."bluetooth" = {
+      "wireplumber.settings" = {
+        "bluetooth.autoswitch-to-headset-profile" = false;
+      };
+      "monitor.bluez.rules" = [
+        {
+          matches = [ { "device.name" = "~bluez_card.*"; } ];
+          actions.update-props = {
+            "bluez5.auto-connect" = [ "a2dp_sink" ];
+          };
+        }
+      ];
+    };
   };
 
 
