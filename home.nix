@@ -14,6 +14,7 @@
     ./home/git.nix
     ./home/yazi.nix
     ./home/k9s.nix
+    ./home/linear-notify.nix
   ];
   # Home Manager needs a bit of information about you and the paths it should
   # manage.
@@ -43,6 +44,9 @@
 		planify
 		gh
 		gnumake
+		tmc-cli
+		md-tui
+		pulseaudio
   ];
 	
 
@@ -87,6 +91,9 @@
   xdg.mimeApps = {
     enable = true;
     defaultApplications = {
+      "application/pdf" = "org.pwmt.zathura.desktop";
+      "application/postscript" = "org.pwmt.zathura.desktop";
+      "image/vnd.djvu" = "org.pwmt.zathura.desktop";
       "inode/directory" = "org.kde.dolphin.desktop";
       "application/x-gnome-saved-search" = "org.kde.dolphin.desktop";
       "x-scheme-handler/http" = "chromium-browser.desktop";
@@ -122,6 +129,8 @@
   # Let Home Manager install and manage itself.
   programs.home-manager.enable = true;
 	programs.poetry.enable = true;
+
+  programs.zathura.enable = true;
 
   programs.ssh = {
     enable = true;

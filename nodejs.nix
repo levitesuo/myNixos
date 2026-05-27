@@ -9,7 +9,7 @@
     
     # Package managers
     yarn       # Alternative package manager
-    pnpm       # Fast, disk space efficient package manager
+    pnpm_9     # Fast, disk space efficient package manager
     corepack   # Package manager manager (enables yarn/pnpm)
     
     # Core development tools that are commonly available

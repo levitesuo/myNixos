@@ -64,6 +64,26 @@
     functions = {
       fish_greeting = "";
 
+      to_stereo = ''
+        set card (pactl list cards short | grep bluez | awk '{print $2}')
+        if test -z "$card"
+          echo "No Bluetooth card found"
+          return 1
+        end
+        pactl set-card-profile $card a2dp-sink
+        and echo "Switched to stereo (A2DP): $card"
+      '';
+
+      to_headset = ''
+        set card (pactl list cards short | grep bluez | awk '{print $2}')
+        if test -z "$card"
+          echo "No Bluetooth card found"
+          return 1
+        end
+        pactl set-card-profile $card headset-head-unit
+        and echo "Switched to headset (HSP/HFP): $card"
+      '';
+
       nix-build = ''
         set dotfiles $HOME/.dotfiles
         set host (hostname)

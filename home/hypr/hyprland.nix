@@ -67,9 +67,6 @@ in
 				"col.active_border" = lib.mkForce activeColor;
 				"col.inactive_border" = lib.mkForce inactiveColor;
 			};
-			cursor = {
-				no_hardware_cursors = true;
-			};
 			
 			dwindle.pseudotile = true;
 			dwindle.preserve_split = true;

@@ -28,9 +28,15 @@
 	networking.firewall.checkReversePath = "loose";
 
   networking.wireless.iwd.enable = true;
-	networking.wireless.iwd.settings = {
-		General.EnableNetworkConfiguration = true;
-	};
+  networking.wireless.iwd.settings = {
+    General = {
+      EnableNetworkConfiguration = true;
+      LogLevel = "debug";
+    };
+    DriverQuirks = {
+      UseDefaultInterface = false;
+    };
+  };
 
   # Enable bluetooth
   hardware.bluetooth = {
@@ -67,8 +73,7 @@
 
 
   environment.sessionVariables = {
-    WLR_NO_HARDWARE_CURSOR = "1";
-    NIXOS_OZONE_WL = "1";
+NIXOS_OZONE_WL = "1";
     XDG_CURRENT_DESKTOP = "Hyprland";
     XDG_SESSION_TYPE = "wayland";
     XDG_SESSION_DESKTOP = "Hyprland";
@@ -101,7 +106,6 @@
 
   # Enable CUPS to print documents.
   services.printing.enable = true;
-	services.spotifyd.enable = true;
 
   # Enable sound with pipewire.
   services.pulseaudio.enable = false;
@@ -141,7 +145,6 @@
     packages = with pkgs; [
 			socat
 			spotify
-			spotifyd
 			vlc
       slack
 			hyprpicker
@@ -169,6 +172,7 @@
 
   services.postgresql = {
     enable = true;
+    settings.port = 5599;
   };
 
 	home-manager.extraSpecialArgs = {
