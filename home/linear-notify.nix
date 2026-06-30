@@ -70,7 +70,7 @@ let
               issue = n.get("issue")
               project = n.get("project")
               if issue:
-                  summary = f"{issue['identifier']}: {ntype.replace('Issue', '').strip().lower()}"
+                  summary = f"{issue['identifier']}: {ntype.replace('Issue', "").strip().lower()}"
                   body = issue["title"]
               elif project:
                   summary = f"Linear: {ntype}"
