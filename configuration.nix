@@ -107,6 +107,14 @@ NIXOS_OZONE_WL = "1";
   # Enable CUPS to print documents.
   services.printing.enable = true;
 
+  # Discover network printers (AirPrint/IPP) via mDNS. The Canon X-1643P
+  # supports driverless IPP Everywhere, so no proprietary driver is needed.
+  services.avahi = {
+    enable = true;
+    nssmdns4 = true;
+    openFirewall = true;
+  };
+
   # Enable sound with pipewire.
   services.pulseaudio.enable = false;
   security.rtkit.enable = true;
