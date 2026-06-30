@@ -24,6 +24,7 @@ in
 		./git-diff-search.nix
 		./markdown.nix
 		./colorizer.nix
+		./octo.nix
 	];
   programs.nixvim = {
     enable = true;
