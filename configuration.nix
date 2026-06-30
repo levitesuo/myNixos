@@ -2,7 +2,7 @@
 # your system.  Help is available in the configuration.nix(5) man page
 # and in the NixOS manual (accessible by running ‘nixos-help’).
 
-{ config, pkgs, stylix, inputs, unstable, hostname, ... }:
+{ config, lib, pkgs, stylix, inputs, unstable, hostname, ... }:
 {
   imports =
     [ ./docker.nix
@@ -94,10 +94,10 @@ NIXOS_OZONE_WL = "1";
     };
   };
 
-	hardware = {
-		graphics.enable = true;
-		nvidia.modesetting.enable = true;
-	};
+	# Shared graphics stack. NVIDIA modesetting is workstation-only — the laptop
+	# is an AMD Phoenix3 APU and configures amdgpu in hosts/laptop/gpu.nix.
+	hardware.graphics.enable = true;
+	hardware.nvidia.modesetting.enable = lib.mkIf (hostname != "ls-laptop") true;
 
   # Configure keymap in X11
   services.xserver.xkb = {

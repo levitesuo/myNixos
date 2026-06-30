@@ -45,6 +45,8 @@
 				modules = [
 					./configuration.nix
 					./hosts/laptop/hardware-configuration.nix
+					./hosts/laptop/gpu.nix
+					./pin-flake-inputs.nix
 					stylix.nixosModules.stylix
 					home-manager.nixosModules.home-manager
 				];
