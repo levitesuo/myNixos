@@ -242,6 +242,7 @@ NIXOS_OZONE_WL = "1";
     openssl
     curl
     brightnessctl
+    pandoc
   ];
 
 	services.resolved.enable = true;
