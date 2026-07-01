@@ -15,7 +15,7 @@
 				"$mainMod, F, exec, $HOME/.config/hypr/scripts/focus_window_picker.sh"
 				"$mainMod, T, exec, $HOME/.config/hypr/scripts/focus_last_class.sh kitty"
 				"$mainMod, B, exec, $HOME/.config/hypr/scripts/focus_last_class.sh Google-chrome"
-				"$mainMod, P, exec, hyprshot env HYPRSHOT_DIR=/home/leevisuo/Pictures/Screenshots hyprshot -m region"
+				"$mainMod, P, exec, env HYPRSHOT_DIR=/home/leevisuo/Pictures/Screenshots hyprshot -m region"
 				"$mainMod, W, exec, killall -SIGUSR1 waybar"
 				"$mainMod, L, exec, hyprlock"
 				"$mainMod, O, exec, planify"
