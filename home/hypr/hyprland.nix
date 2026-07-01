@@ -23,14 +23,15 @@ in
 
 	];
 
-    # Deploy the focus_border script into the user's hypr config so we can run it
-    xdg.configFile."hypr/scripts/focus_border.sh" = {
-      source = ./scripts/focus_border.sh;
+    # Super+RETURN opens a new kitty in the directory recorded by set_open_dir.sh
+    xdg.configFile."hypr/scripts/kitty_editor_dir.sh" = {
+      source = ./scripts/kitty_editor_dir.sh;
       executable = true;
     };
 
-    xdg.configFile."hypr/scripts/kitty_editor_dir.sh" = {
-      source = ./scripts/kitty_editor_dir.sh;
+    # Super+Shift+RETURN records the focused kitty's cwd as that directory
+    xdg.configFile."hypr/scripts/set_open_dir.sh" = {
+      source = ./scripts/set_open_dir.sh;
       executable = true;
     };
 
@@ -55,8 +56,6 @@ in
 				"hyprlock &"
 				"wl-paste --type text --watch cliphist store &"
 				"wl-paste --type image --watch cliphist store &"
-				# start the focus_border listener with Stylix-derived colors
-				"sh -c '$HOME/.config/hypr/scripts/focus_border.sh \"${inactiveColor}\" \"${activeColor}\" &'"
 			];
 			general = {
 				gaps_in = 3;

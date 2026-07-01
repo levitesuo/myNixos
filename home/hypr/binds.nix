@@ -8,6 +8,7 @@
 # Programs and scripts
 				"$mainMod, SPACE, exec, kitty"
 			"$mainMod, RETURN, exec, $HOME/.config/hypr/scripts/kitty_editor_dir.sh"
+				"$mainMod SHIFT, RETURN, exec, $HOME/.config/hypr/scripts/set_open_dir.sh"
 				"$mainMod, C, killactive"
 				"$mainMod, R, exec, rofi -show drun"
 				"$mainMod, G, exec, google-chrome-stable --ozone-platform=x11"
