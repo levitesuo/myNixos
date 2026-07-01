@@ -154,7 +154,14 @@ NIXOS_OZONE_WL = "1";
 			socat
 			spotify
 			vlc
-      slack
+      # Force XWayland: native Wayland ozone thrashes the AMD Phoenix3 iGPU
+      # buffer and crashes Slack on launch (same fix as Chrome in binds.nix).
+      (slack.overrideAttrs (old: {
+        nativeBuildInputs = (old.nativeBuildInputs or [ ]) ++ [ makeWrapper ];
+        postFixup = (old.postFixup or "") + ''
+          wrapProgram $out/bin/slack --add-flags "--ozone-platform=x11"
+        '';
+      }))
 			hyprpicker
 			google-chrome
 			iio-hyprland
