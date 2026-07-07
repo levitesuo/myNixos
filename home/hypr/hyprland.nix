@@ -18,6 +18,7 @@ in
 		./animation.nix
 		./waybar/waybar.nix
 		./inputs.nix
+		./touch.nix
 		./hypridle.nix
 		./hyprlock.nix
 
@@ -59,7 +60,8 @@ in
 			];
 			general = {
 				gaps_in = 3;
-				gaps_out = 5;
+				# top right bottom left — extra space at the screen bottom for touch reach
+				gaps_out = "5 5 50 5";
 				border_size = 2;
 				resize_on_border = true;
 				layout = "dwindle";

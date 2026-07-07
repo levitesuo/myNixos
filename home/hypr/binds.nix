@@ -12,6 +12,7 @@
 				"$mainMod, C, killactive"
 				"$mainMod, R, exec, rofi -show drun"
 				"$mainMod, G, exec, google-chrome-stable --ozone-platform=x11"
+				"$mainMod, I, exec, $HOME/.config/hypr/scripts/toggle-osk.sh"
 				"$mainMod, F, exec, $HOME/.config/hypr/scripts/focus_window_picker.sh"
 				"$mainMod, T, exec, $HOME/.config/hypr/scripts/focus_last_class.sh kitty"
 				"$mainMod, B, exec, $HOME/.config/hypr/scripts/focus_last_class.sh Google-chrome"

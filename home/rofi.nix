@@ -5,9 +5,14 @@
 
     programs.rofi = {
         enable = true;
+        # Wayland-native build: renders a fullscreen layer-shell surface, so a
+        # tap/click anywhere outside the box dismisses it (X11 rofi's pointer
+        # grab can't see clicks on native Wayland windows under Hyprland).
+        package = pkgs.rofi-wayland;
         terminal = "${pkgs.alacritty}/bin/alacritty";
         extraConfig = {
             modi = "drun";
+            click-to-exit = true;   # tap outside the window to close
             show-icons = true;
             drun-display-format = "{icon} {name}";
             sidebar-mode = false;

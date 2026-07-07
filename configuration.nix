@@ -165,6 +165,7 @@ NIXOS_OZONE_WL = "1";
 			hyprpicker
 			google-chrome
 			iio-hyprland
+			wvkbd
 			jq
       dbeaver-bin
       uv
