@@ -91,14 +91,23 @@ in
   systemd.user.services.linear-notify = {
     Unit = {
       Description = "Linear notification poller";
-      After = [ "graphical-session.target" ];
+      # Ordered after the render but deliberately not pulling it in: this unit
+      # runs from a 30s timer, and a Wants= would re-activate a failed render
+      # on every tick, asking 1Password to unlock each time.
+      After = [ "graphical-session.target" "op-secrets.service" ];
       PartOf = [ "graphical-session.target" ];
     };
     Service = {
       Type = "oneshot";
       ExecStart = "${script}";
-      # Create ~/.config/linear/credentials with: LINEAR_API_KEY=lin_api_xxxxx
-      EnvironmentFile = "%h/.config/linear/credentials";
+      # Both files are optional, and the later one wins: the API key normally
+      # comes from 1Password, but a hand-written ~/.config/linear/credentials
+      # holding LINEAR_API_KEY=lin_api_xxxxx still works. With neither present
+      # the poller sees an empty key and exits without notifying.
+      EnvironmentFile = [
+        "-%h/.config/linear/credentials"
+        "-%t/op-secrets/linear.env"
+      ];
     };
   };
 

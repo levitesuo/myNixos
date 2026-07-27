@@ -15,6 +15,7 @@
     ./home/yazi.nix
     ./home/k9s.nix
     ./home/linear-notify.nix
+    ./home/onepassword-secrets.nix
   ];
   # Home Manager needs a bit of information about you and the paths it should
   # manage.

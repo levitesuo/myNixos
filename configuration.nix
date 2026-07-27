@@ -10,6 +10,7 @@
 			./stylix.nix
       ./azure-and-vpn.nix
       ./kubernetes-port-forwards.nix
+      ./onepassword.nix
     ];
 
 	
@@ -165,6 +166,7 @@ NIXOS_OZONE_WL = "1";
 			hyprpicker
 			google-chrome
 			iio-hyprland
+			wvkbd
 			jq
       dbeaver-bin
       uv

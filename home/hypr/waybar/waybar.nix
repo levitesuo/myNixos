@@ -16,7 +16,13 @@
         # Fixed the typo here from "cloack" to "clock/calendar"
         modules-left = [ "battery" "network" "pulseaudio" "bluetooth" ];
         modules-center = [ "hyprland/workspaces" ];
-        modules-right = [ "custom/weather" "clock#calendar" "clock"  ];
+        modules-right = [ "custom/keyboard" "custom/weather" "clock#calendar" "clock"  ];
+
+        "custom/keyboard" = {
+          format = "󰌌";
+          tooltip = false;
+          on-click = "$HOME/.config/hypr/scripts/toggle-osk.sh";
+        };
 
         "clock" = {
           format = "{:%H:%M}";
