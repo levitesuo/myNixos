@@ -262,6 +262,16 @@ NIXOS_OZONE_WL = "1";
 	services.udisks2.enable = true;
   services.gnome.gnome-keyring.enable = true;
   security.pam.services.login.enableGnomeKeyring = true;
+
+  # hyprlock authenticates through PAM, but there is no /etc/pam.d/hyprlock
+  # unless we declare one — it silently falls back to /etc/pam.d/su, which
+  # happens to work while making the screen lock depend on su's stack.
+  # logFailures keeps the failed-attempt logging su's stack already gave us.
+  security.pam.services.hyprlock = {
+    enableGnomeKeyring = true;
+    logFailures = true;
+  };
+
   system.stateVersion = "25.05";
 
 
