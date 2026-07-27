@@ -22,6 +22,20 @@
   # which walks straight past the lock screen.
   boot.loader.systemd-boot.editor = false;
 
+  # Swap holds pages evicted from RAM, so a plaintext swap partition leaks
+  # whatever was in memory — keys, tokens, decrypted documents — and survives
+  # power-off. Re-key it with a fresh random key on every boot instead. This
+  # rules out hibernation, which is already unused: lid and power key suspend.
+  #
+  # Referenced by PARTUUID deliberately. Random encryption rewrites the
+  # partition on every boot, so the filesystem UUID that nixos-generate-config
+  # emitted stops resolving after the first boot; the partition UUID lives in
+  # the GPT and survives.
+  swapDevices = lib.mkIf (hostname == "ls-laptop") (lib.mkForce [{
+    device = "/dev/disk/by-partuuid/4b0d16c8-3e2b-414c-b8e4-b0d01654cd36";
+    randomEncryption.enable = true;
+  }]);
+
   nix.gc = {
     automatic = true;
     dates = "weekly";
