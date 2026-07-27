@@ -53,6 +53,9 @@ in
 		settings = {
 			exec-once = [
 				"iio-hyprland"
+				# Started locked and hidden: the tray icon is enough to unlock, and
+				# the CLI and browser integrations both need the app already running.
+				"1password --silent &"
 				"sleep 1; waybar &"
 				"hyprlock &"
 				"wl-paste --type text --watch cliphist store &"

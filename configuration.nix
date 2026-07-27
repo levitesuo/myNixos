@@ -10,6 +10,7 @@
 			./stylix.nix
       ./azure-and-vpn.nix
       ./kubernetes-port-forwards.nix
+      ./onepassword.nix
     ];
 
 	
