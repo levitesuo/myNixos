@@ -91,8 +91,10 @@ in
   systemd.user.services.linear-notify = {
     Unit = {
       Description = "Linear notification poller";
+      # Ordered after the render but deliberately not pulling it in: this unit
+      # runs from a 30s timer, and a Wants= would re-activate a failed render
+      # on every tick, asking 1Password to unlock each time.
       After = [ "graphical-session.target" "op-secrets.service" ];
-      Wants = [ "op-secrets.service" ];
       PartOf = [ "graphical-session.target" ];
     };
     Service = {

@@ -17,16 +17,17 @@
 
   # 1Password refuses to talk to a browser it cannot recognise, and it matches
   # on executable name against a built-in list that the Nix-built browsers miss.
-  # Both the wrapper and the wrapped binary are listed because the extension
-  # handshake sees the latter.
+  # Chrome's real image is `chrome`, reached through a `google-chrome-stable`
+  # shell wrapper that re-execs it; both names are listed so the match holds
+  # whichever one 1Password ends up seeing.
   environment.etc."1password/custom_allowed_browsers" = {
     text = ''
       chromium
-      .chromium-wrapped
+      chromium-browser
+      chrome
       google-chrome-stable
-      .google-chrome-wrapped
     '';
     # 1Password rejects the file outright if it is group- or world-writable.
-    mode = "0755";
+    mode = "0644";
   };
 }

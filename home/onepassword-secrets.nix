@@ -21,14 +21,30 @@ let
   # group, so the bare store binary would fail to resolve any reference.
   opSecrets = pkgs.writeShellApplication {
     name = "op-secrets";
+    runtimeInputs = [ pkgs.coreutils ];
     text = ''
       dir="''${XDG_RUNTIME_DIR:?XDG_RUNTIME_DIR is not set}/op-secrets"
       mkdir -p "$dir"
       chmod 700 "$dir"
       umask 077
-      ${lib.concatStringsSep "\n" (lib.mapAttrsToList (name: vars:
-        "/run/wrappers/bin/op inject --force --in-file ${templateFor name vars} --out-file \"$dir/${name}.env\""
-      ) cfg.envFiles)}
+
+      render() {
+        : # keeps the function valid when nothing is declared
+        ${lib.concatStringsSep "\n  " (lib.mapAttrsToList (name: vars:
+          "/run/wrappers/bin/op inject --force --in-file ${templateFor name vars} --out-file \"$dir/${name}.env\""
+        ) cfg.envFiles)}
+      }
+
+      # The desktop app is normally still starting when the session reaches
+      # this point, and op cannot resolve a reference before the app answers.
+      # Retry for a while rather than leaving the session without its secrets.
+      for attempt in 1 2 3 4 5; do
+        if render; then exit 0; fi
+        echo "op-secrets: render failed (attempt $attempt), retrying in 5s" >&2
+        sleep 5
+      done
+      echo "op-secrets: giving up — is 1Password running and unlocked?" >&2
+      exit 1
     '';
   };
 in
@@ -64,8 +80,8 @@ in
       };
       Service = {
         Type = "oneshot";
-        # Consumers pull this in via Wants=; without this they would re-trigger
-        # a render, and a fresh unlock prompt, on every activation.
+        # The rendered files outlive the process, so the unit should read as
+        # active once it has run rather than as dead.
         RemainAfterExit = true;
         ExecStart = lib.getExe opSecrets;
       };

@@ -21,9 +21,14 @@ in
         # SSH signatures rather than GPG, with 1Password holding the private
         # half. op-ssh-sign reaches the key through the desktop app's agent, so
         # nothing signable ever lands on disk.
+        #
+        # Deliberately the system path and not pkgs._1password-gui: the NixOS
+        # module installs the package with polkitPolicyOwners applied, and
+        # referring to the un-overridden one here would pull a second 583 MB
+        # copy of the app into the closure.
         signing = {
             format = "ssh";
-            signer = "${pkgs._1password-gui}/bin/op-ssh-sign";
+            signer = "/run/current-system/sw/bin/op-ssh-sign";
             key = signingKey;
             signByDefault = signingKey != null;
         };
