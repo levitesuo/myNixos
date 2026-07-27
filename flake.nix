@@ -46,7 +46,6 @@
 					./configuration.nix
 					./hosts/laptop/hardware-configuration.nix
 					./hosts/laptop/gpu.nix
-					./hosts/laptop/sensor.nix
 					./pin-flake-inputs.nix
 					stylix.nixosModules.stylix
 					home-manager.nixosModules.home-manager

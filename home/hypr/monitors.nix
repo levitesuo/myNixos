@@ -1,9 +1,9 @@
 { hostname, ... }:
 let
 	laptopMonitors = [
-		"DP-2, preferred, 0x0, auto"
+		"DP-2, preferred, 0x0, 1"
 		"DP-1, 2560x1440@59.95, 3440x0, 1"
-		"eDP-1, 1920x1200@60, auto-down, 1"
+		"eDP-1, 1920x1200@60, 760x1440, 1"
 	];
 
 	workstationMonitors = [
