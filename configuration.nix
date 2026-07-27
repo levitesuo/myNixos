@@ -17,6 +17,10 @@
   boot.loader.systemd-boot.enable = true;
   boot.loader.systemd-boot.configurationLimit = 5;
   boot.loader.efi.canTouchEfiVariables = true;
+  # Without this, anyone at the boot menu can press "e" and append
+  # init=/bin/sh to the kernel command line for a root shell with no password,
+  # which walks straight past the lock screen.
+  boot.loader.systemd-boot.editor = false;
 
   nix.gc = {
     automatic = true;
@@ -204,9 +208,10 @@ NIXOS_OZONE_WL = "1";
 			home.stateVersion = "25.05";
 	};
 
-  # Configure console auto-login and start Hyprland
-  services.getty.autologinUser = "leevisuo";
-  
+  # No console auto-login: the tty1 password prompt is what gates access to the
+  # session. fish still execs Hyprland on tty1 once that prompt is satisfied,
+  # so logging in still lands straight in the compositor.
+
   # Enable Hyprland system-wide
   programs.hyprland = {
     enable = true;

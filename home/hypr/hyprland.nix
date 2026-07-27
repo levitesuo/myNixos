@@ -51,10 +51,14 @@ in
 	wayland.windowManager.hyprland = {
 		enable = true;
 		settings = {
+			# No hyprlock here. It used to stand in for a login prompt under
+			# console auto-login, but the tty1 password now gates the session,
+			# so locking at startup only asks for the same password twice —
+			# and it fails open: if hyprlock crashes on launch the desktop is
+			# simply exposed, with nothing to retry it.
 			exec-once = [
 				"iio-hyprland"
 				"sleep 1; waybar &"
-				"hyprlock &"
 				"wl-paste --type text --watch cliphist store &"
 				"wl-paste --type image --watch cliphist store &"
 			];
