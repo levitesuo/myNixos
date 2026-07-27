@@ -18,6 +18,24 @@
   boot.loader.systemd-boot.enable = true;
   boot.loader.systemd-boot.configurationLimit = 5;
   boot.loader.efi.canTouchEfiVariables = true;
+  # Without this, anyone at the boot menu can press "e" and append
+  # init=/bin/sh to the kernel command line for a root shell with no password,
+  # which walks straight past the lock screen.
+  boot.loader.systemd-boot.editor = false;
+
+  # Swap holds pages evicted from RAM, so a plaintext swap partition leaks
+  # whatever was in memory — keys, tokens, decrypted documents — and survives
+  # power-off. Re-key it with a fresh random key on every boot instead. This
+  # rules out hibernation, which is already unused: lid and power key suspend.
+  #
+  # Referenced by PARTUUID deliberately. Random encryption rewrites the
+  # partition on every boot, so the filesystem UUID that nixos-generate-config
+  # emitted stops resolving after the first boot; the partition UUID lives in
+  # the GPT and survives.
+  swapDevices = lib.mkIf (hostname == "ls-laptop") (lib.mkForce [{
+    device = "/dev/disk/by-partuuid/4b0d16c8-3e2b-414c-b8e4-b0d01654cd36";
+    randomEncryption.enable = true;
+  }]);
 
   nix.gc = {
     automatic = true;
@@ -205,9 +223,10 @@ NIXOS_OZONE_WL = "1";
 			home.stateVersion = "25.05";
 	};
 
-  # Configure console auto-login and start Hyprland
-  services.getty.autologinUser = "leevisuo";
-  
+  # No console auto-login: the tty1 password prompt is what gates access to the
+  # session. fish still execs Hyprland on tty1 once that prompt is satisfied,
+  # so logging in still lands straight in the compositor.
+
   # Enable Hyprland system-wide
   programs.hyprland = {
     enable = true;
@@ -258,6 +277,16 @@ NIXOS_OZONE_WL = "1";
 	services.udisks2.enable = true;
   services.gnome.gnome-keyring.enable = true;
   security.pam.services.login.enableGnomeKeyring = true;
+
+  # hyprlock authenticates through PAM, but there is no /etc/pam.d/hyprlock
+  # unless we declare one — it silently falls back to /etc/pam.d/su, which
+  # happens to work while making the screen lock depend on su's stack.
+  # logFailures keeps the failed-attempt logging su's stack already gave us.
+  security.pam.services.hyprlock = {
+    enableGnomeKeyring = true;
+    logFailures = true;
+  };
+
   system.stateVersion = "25.05";
 
 
