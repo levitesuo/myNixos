@@ -9,8 +9,13 @@
 				# quietly reintroduce a window where input alone unlocks the
 				# screen without a password.
 				grace = 0;
-				# An empty submission is not a guess, so don't let one count
-				# toward the PAM failure counter.
+				# Draw without waiting on the background image. Suspend is held
+				# until the compositor reports the session locked, so anything
+				# hyprlock blocks on before its first commit is time the machine
+				# spends awake and unlocked.
+				immediate_render = true;
+				# A bare Enter is not a guess; don't spend the fail_timeout
+				# lockout of the input field on one.
 				ignore_empty_input = true;
 				hide_cursor = true;
 			};
