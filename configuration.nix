@@ -281,11 +281,15 @@ NIXOS_OZONE_WL = "1";
   # hyprlock authenticates through PAM, but there is no /etc/pam.d/hyprlock
   # unless we declare one — it silently falls back to /etc/pam.d/su, which
   # happens to work while making the screen lock depend on su's stack.
-  # logFailures keeps the failed-attempt logging su's stack already gave us.
-  security.pam.services.hyprlock = {
-    enableGnomeKeyring = true;
-    logFailures = true;
-  };
+  #
+  # No faillock here. logFailures would emit a single "auth required
+  # pam_faillock.so" with no action argument, which parses as preauth: it reads
+  # the failure tally but never writes one, so nothing is counted or logged.
+  # Real lockout needs the full preauth/authfail/authsucc trio plus an account
+  # rule, and on a laptop lock screen that mostly buys a way for a passer-by to
+  # lock the owner out. Brute-force pacing comes from hyprlock's own
+  # fail_timeout instead.
+  security.pam.services.hyprlock.enableGnomeKeyring = true;
 
   system.stateVersion = "25.05";
 
