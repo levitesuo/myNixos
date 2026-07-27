@@ -4,6 +4,16 @@
 	programs.hyprlock = {
 		enable = true;
 		settings = {
+			general = {
+				# Already hyprlock's default, pinned so a later edit can't
+				# quietly reintroduce a window where input alone unlocks the
+				# screen without a password.
+				grace = 0;
+				# An empty submission is not a guess, so don't let one count
+				# toward the PAM failure counter.
+				ignore_empty_input = true;
+				hide_cursor = true;
+			};
 			label = [
 				{
 					text = "$TIME";
