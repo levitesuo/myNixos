@@ -1,8 +1,6 @@
 { config, pkgs, ... }:
 
 let
-  azure-storage-explorer = pkgs.callPackage ./pkgs/azure-storage-explorer.nix {};
-
   vpnResolveScript = pkgs.writeShellScript "vpn-up-resolve" ''
     ${pkgs.systemd}/bin/resolvectl dns "$1" 10.1.25.4
     ${pkgs.systemd}/bin/resolvectl domain "$1" vpn.internal
@@ -22,7 +20,6 @@ in
   environment.systemPackages = with pkgs; [
     (azure-cli.withExtensions [ azure-cli.extensions.aks-preview ])
     azure-storage-azcopy
-    azure-storage-explorer
   ];
 
   services.openvpn.servers.azure = {
