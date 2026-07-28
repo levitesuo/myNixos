@@ -167,7 +167,12 @@ NIXOS_OZONE_WL = "1";
   users.users.leevisuo = {
     isNormalUser = true;
     description = "Leevi Suotula";
-    extraGroups = [ "wheel" "docker" "network" ];
+    # No "docker" here on purpose. The rootful daemon's socket is group-owned,
+    # and reaching it is enough to run a --privileged container that mounts the
+    # host root, so membership would make this account root-equivalent without
+    # ever passing the sudo prompt. Containers come from the rootless daemon in
+    # docker.nix instead.
+    extraGroups = [ "wheel" "network" ];
     shell = pkgs.fish;
     packages = with pkgs; [
 			socat
