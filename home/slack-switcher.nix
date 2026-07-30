@@ -24,9 +24,32 @@ let
     # kicks off a refresh in the background but still shows the stale list.
     STALE_AFTER = 3600
 
+    # Past this the cache is not merely due a refresh, something is wrong with
+    # it — say so in the prompt rather than quietly serving month-old names.
+    SUSPECT_AFTER = STALE_AFTER * 24
+
+    # Enough history to order the list, few enough that the file stays small.
+    MRU_LIMIT = 200
+
     # Resolved by the icon theme rather than being a path, so every channel row
     # carries the Slack mark while people rows carry a real face.
     CHANNEL_ICON = "slack"
+
+
+    class NoRedirect(urllib.request.HTTPRedirectHandler):
+        """Refuse redirects on authenticated calls.
+
+        urllib copies the request headers onto the redirect target, including
+        across hosts, which would hand the token to whatever the redirect names.
+        Slack's API does not redirect, so refusing outright costs nothing.
+        """
+
+        def redirect_request(self, req, fp, code, msg, headers, newurl):
+            raise urllib.error.HTTPError(
+                req.full_url, code, "unexpected redirect to " + newurl, headers, fp)
+
+
+    OPENER = urllib.request.build_opener(NoRedirect)
 
 
     def api(method, **params):
@@ -36,17 +59,28 @@ let
         req = urllib.request.Request(url, headers={"Authorization": "Bearer " + TOKEN})
 
         # A workspace with many channels needs enough pages to reach Slack's
-        # per-method rate limit, and one 429 would otherwise abandon the whole
-        # refresh and leave the cache silently stale.
+        # per-method rate limit, and a laptop refreshing on a timer wakes to a
+        # dead network often enough to matter. Either abandoning the refresh
+        # would leave the cache silently stale for an hour.
         for attempt in range(5):
             try:
-                with urllib.request.urlopen(req, timeout=15) as r:
+                with OPENER.open(req, timeout=15) as r:
                     payload = json.loads(r.read())
                 break
             except urllib.error.HTTPError as e:
                 if e.code != 429 or attempt == 4:
                     raise
-                time.sleep(int(e.headers.get("Retry-After", 5)) + 1)
+                try:
+                    delay = int(e.headers.get("Retry-After", 5))
+                except (TypeError, ValueError):
+                    # Retry-After may also be an HTTP date; the default is close
+                    # enough that parsing one is not worth the code.
+                    delay = 5
+                time.sleep(delay + 1)
+            except OSError:
+                if attempt == 4:
+                    raise
+                time.sleep(2 ** attempt)
 
         if not payload.get("ok"):
             raise RuntimeError(method + ": " + str(payload.get("error", "unknown error")))
@@ -65,12 +99,36 @@ let
                 return
 
 
+    def write_atomic(path, data):
+        """Write via a temp file and rename.
+
+        The refresh unit is PartOf=graphical-session.target, so logging out can
+        SIGTERM it mid-write; a half-written cache would read as corrupt and
+        take the switcher down with it.
+        """
+        path.parent.mkdir(parents=True, exist_ok=True)
+        tmp = path.with_name(path.name + "." + str(os.getpid()) + ".tmp")
+        if isinstance(data, str):
+            tmp.write_text(data)
+        else:
+            tmp.write_bytes(data)
+        os.replace(tmp, path)
+
+
+    def read_json(path, fallback):
+        try:
+            return json.loads(path.read_text())
+        except Exception:
+            return fallback
+
+
     def avatar(url):
         """Cache an avatar under a URL-derived name and return its path.
 
         Slack rewrites the URL whenever someone changes their picture, so keying
         on the URL means a new picture lands as a new file instead of being
-        masked by a stale cache entry.
+        masked by a stale cache entry. The flip side is that a truncated file
+        would never be retried, hence the atomic write.
         """
         if not url:
             return None
@@ -82,19 +140,20 @@ let
                 data = r.read()
         except Exception:
             return None
-        dest.write_bytes(data)
+        write_atomic(dest, data)
         return dest
 
 
-    def refresh():
-        if not TOKEN:
-            print("slack-switcher: no SLACK_TOKEN, nothing to refresh", file=sys.stderr)
-            return 0
-
+    def collect():
+        """Build the conversation list. Returns (team_id, entries, complete)."""
         AVATARS.mkdir(parents=True, exist_ok=True)
         team_id = api("auth.test")["team_id"]
         entries = []
+        faces = set()
+        complete = True
 
+        # Every public channel, not only the joined ones: the point of a
+        # switcher is to reach a channel you are not already sitting in.
         for c in paged("conversations.list", "channels",
                        types="public_channel", exclude_archived="true"):
             entries.append({
@@ -104,24 +163,28 @@ let
                 "kind": "channel",
             })
 
-        # users.info per DM partner rather than one users.list: the number of
-        # open DMs is small, while the workspace directory is not, and there is
-        # no reason to pull down people you never message.
-        keep = set()
         for im in paged("users.conversations", "channels", types="im"):
             uid = im.get("user")
             if not uid:
                 continue
+            # users.info per DM partner rather than one users.list: the people
+            # you message are a small set, the workspace directory is not.
             try:
                 profile = api("users.info", user=uid)["user"]
             except Exception:
+                # Keep the conversation under a placeholder rather than dropping
+                # it. An omitted entry is indistinguishable from a DM that no
+                # longer exists, and would be cached as such for an hour.
+                complete = False
+                entries.append({"id": im["id"], "user": uid, "label": "@" + uid,
+                                "icon": CHANNEL_ICON, "kind": "im"})
                 continue
             name = (profile.get("profile", {}).get("display_name")
                     or profile.get("real_name")
                     or profile.get("name", uid))
             face = avatar(profile.get("profile", {}).get("image_48"))
             if face:
-                keep.add(face.name)
+                faces.add(face.name)
             entries.append({
                 "id": im["id"],
                 "user": uid,
@@ -130,29 +193,49 @@ let
                 "kind": "im",
             })
 
-        for stale in AVATARS.iterdir():
-            if stale.name not in keep:
-                stale.unlink(missing_ok=True)
+        return team_id, entries, complete, faces
 
-        DATA.mkdir(parents=True, exist_ok=True)
-        CACHE.write_text(json.dumps({
+
+    def refresh():
+        if not TOKEN:
+            print("slack-switcher: no SLACK_TOKEN, nothing to refresh", file=sys.stderr)
+            return 0
+        try:
+            team_id, entries, complete, faces = collect()
+        except Exception as e:
+            # Leave the old cache in place: a stale list beats no list, and the
+            # unit failing is what makes the problem visible in the journal.
+            print("slack-switcher: refresh failed: " + str(e), file=sys.stderr)
+            return 1
+
+        write_atomic(CACHE, json.dumps({
             "team_id": team_id,
             "fetched_at": int(time.time()),
             "entries": entries,
         }))
+
+        # Only after a clean run, and only after the cache naming them is on
+        # disk: a run that failed a lookup has an incomplete picture of which
+        # faces are still in use, and would delete the rest.
+        if complete:
+            for stale in AVATARS.iterdir():
+                if stale.name not in faces:
+                    stale.unlink(missing_ok=True)
+
         print("slack-switcher: cached " + str(len(entries)) + " conversations")
         return 0
 
 
-    def read_json(path, fallback):
-        try:
-            return json.loads(path.read_text())
-        except Exception:
-            return fallback
-
-
     def notify(body):
         subprocess.run(["${pkgs.libnotify}/bin/notify-send", "-a", "Slack", "Slack switcher", body])
+
+
+    def request_refresh():
+        subprocess.Popen(
+            ["${pkgs.systemd}/bin/systemctl", "--user", "start", "--no-block",
+             "slack-switcher-refresh.service"],
+            stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL,
+        )
 
 
     def order(entries, mru):
@@ -172,16 +255,16 @@ let
 
     def launch():
         cache = read_json(CACHE, None)
-        if not cache or not cache.get("entries"):
-            notify("No cached conversations yet. Run: slack-switcher --refresh")
+        if not cache or not cache.get("entries") or not cache.get("team_id"):
+            # Covers first run and a cache that failed to parse. Kick off the
+            # rebuild here so recovering never means opening a terminal.
+            request_refresh()
+            notify("Building the conversation list — try again in a moment.")
             return 1
 
-        if time.time() - cache.get("fetched_at", 0) > STALE_AFTER:
-            subprocess.Popen(
-                ["${pkgs.systemd}/bin/systemctl", "--user", "start", "--no-block",
-                 "slack-switcher-refresh.service"],
-                stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL,
-            )
+        age = time.time() - cache.get("fetched_at", 0)
+        if age > STALE_AFTER:
+            request_refresh()
 
         mru = read_json(MRU, {})
         entries = order(cache["entries"], mru)
@@ -191,7 +274,10 @@ let
 
         picked = subprocess.run(
             ["${config.programs.rofi.package}/bin/rofi",
-             "-dmenu", "-i", "-p", "Slack",
+             "-dmenu", "-i",
+             # Refreshes have been failing long enough that the names on screen
+             # can no longer be trusted; say so where it will be read.
+             "-p", "Slack (stale)" if age > SUSPECT_AFTER else "Slack",
              # Index rather than text: labels are user-controlled and need not
              # round-trip back to an id.
              "-format", "i",
@@ -211,9 +297,10 @@ let
             return 1
 
         mru[entry["id"]] = int(time.time())
-        live = set(e["id"] for e in cache["entries"])
-        MRU.parent.mkdir(parents=True, exist_ok=True)
-        MRU.write_text(json.dumps({k: v for k, v in mru.items() if k in live}))
+        # Trimmed by age, not filtered against the cache: a refresh that missed
+        # a conversation must not erase the history that orders the whole list.
+        newest = sorted(mru.items(), key=lambda kv: -kv[1])[:MRU_LIMIT]
+        write_atomic(MRU, json.dumps(dict(newest)))
 
         url = "slack://channel?" + urllib.parse.urlencode({
             "team": cache["team_id"], "id": entry["id"],
@@ -223,9 +310,13 @@ let
         # start a second, differently-flagged instance.
         subprocess.run(["${pkgs.xdg-utils}/bin/xdg-open", url])
         # The deep link does not reliably raise the window under Hyprland.
-        # hyprctl comes from PATH so it always matches the running compositor.
-        subprocess.run(["hyprctl", "dispatch", "focuswindow", "class:Slack"],
-                       stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL)
+        # hyprctl comes from PATH so it always matches the running compositor,
+        # which also means it may not be there at all.
+        try:
+            subprocess.run(["hyprctl", "dispatch", "focuswindow", "class:Slack"],
+                           stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL)
+        except OSError:
+            pass
         return 0
 
 
