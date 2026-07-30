@@ -17,6 +17,7 @@
     ./home/linear-notify.nix
     ./home/onepassword-secrets.nix
     ./home/claude-notify.nix
+    ./home/slack-switcher.nix
   ];
   # Home Manager needs a bit of information about you and the paths it should
   # manage.
@@ -101,6 +102,9 @@
       "x-scheme-handler/http" = "chromium-browser.desktop";
       "x-scheme-handler/https" = "chromium-browser.desktop";
       "x-scheme-handler/ftp" = "chromium-browser.desktop";
+      # This list is managed explicitly, so name the Slack handler rather than
+      # relying on a fallback to the system-wide association.
+      "x-scheme-handler/slack" = "slack.desktop";
       "text/html" = "chromium-browser.desktop";
       "application/xhtml+xml" = "chromium-browser.desktop";
       "application/json" = "kitty-nvim.desktop";
