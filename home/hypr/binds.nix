@@ -20,6 +20,7 @@
 				"$mainMod, W, exec, killall -SIGUSR1 waybar"
 				"$mainMod, L, exec, hyprlock"
 				"$mainMod, O, exec, planify"
+				"$mainMod, S, exec, slack-switcher"
 # Dwiddle and toggle split
 				"$mainMod, J, togglesplit, # dwindle"
 				"$mainMod, K, swapsplit"
