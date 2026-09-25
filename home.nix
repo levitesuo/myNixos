@@ -90,6 +90,28 @@
     ];
   };
 
+  # Chromium 143 aborts on startup under Hyprland's Wayland colour-management
+  # protocol ("Incomplete image description info from compositor"), so a link
+  # handed to a Wayland-mode browser never opens. Route links to Chrome on
+  # XWayland instead. Hidden so the launcher keeps showing a single Chrome.
+  xdg.desktopEntries."google-chrome-x11" = {
+    name = "Google Chrome (XWayland)";
+    genericName = "Web Browser";
+    exec = "google-chrome-stable --ozone-platform=x11 %U";
+    icon = "google-chrome";
+    terminal = false;
+    type = "Application";
+    noDisplay = true;
+    categories = [ "Network" "WebBrowser" ];
+    mimeType = [
+      "text/html"
+      "application/xhtml+xml"
+      "x-scheme-handler/http"
+      "x-scheme-handler/https"
+      "x-scheme-handler/ftp"
+    ];
+  };
+
   xdg.mimeApps = {
     enable = true;
     defaultApplications = {
@@ -98,11 +120,11 @@
       "image/vnd.djvu" = "org.pwmt.zathura.desktop";
       "inode/directory" = "org.kde.dolphin.desktop";
       "application/x-gnome-saved-search" = "org.kde.dolphin.desktop";
-      "x-scheme-handler/http" = "chromium-browser.desktop";
-      "x-scheme-handler/https" = "chromium-browser.desktop";
-      "x-scheme-handler/ftp" = "chromium-browser.desktop";
-      "text/html" = "chromium-browser.desktop";
-      "application/xhtml+xml" = "chromium-browser.desktop";
+      "x-scheme-handler/http" = "google-chrome-x11.desktop";
+      "x-scheme-handler/https" = "google-chrome-x11.desktop";
+      "x-scheme-handler/ftp" = "google-chrome-x11.desktop";
+      "text/html" = "google-chrome-x11.desktop";
+      "application/xhtml+xml" = "google-chrome-x11.desktop";
       "application/json" = "kitty-nvim.desktop";
       "text/plain" = "kitty-nvim.desktop";
       "text/markdown" = "kitty-nvim.desktop";

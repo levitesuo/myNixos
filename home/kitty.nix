@@ -8,7 +8,7 @@
 			background_opacity = lib.mkForce 0;
 			dynamic-background_opacity = "yes";
 			bakcground_blur = lib.mkForce 0;
-			open_url_with = "chromium";
+			open_url_with = "default";
 			open_url_modifiers = "ctrl";
 		};
 
