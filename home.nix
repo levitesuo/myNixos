@@ -49,6 +49,7 @@
 		tmc-cli
 		md-tui
 		pulseaudio
+		google-cloud-sdk
   ];
 	
 
